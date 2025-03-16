@@ -9,66 +9,69 @@ use rust_joinstr::{
     signer,
 };
 
-pub enum DNetwork {
+pub enum Network {
     Regtest,
     Signet,
     Testnet,
     Bitcoin,
 }
 
-impl From<DNetwork> for bitcoin::Network {
-    fn from(value: DNetwork) -> Self {
+impl From<Network> for bitcoin::Network {
+    fn from(value: Network) -> Self {
         match value {
-            DNetwork::Regtest => bitcoin::Network::Regtest,
-            DNetwork::Signet => bitcoin::Network::Signet,
-            DNetwork::Testnet => bitcoin::Network::Testnet,
-            DNetwork::Bitcoin => bitcoin::Network::Bitcoin,
+            Network::Regtest => bitcoin::Network::Regtest,
+            Network::Signet => bitcoin::Network::Signet,
+            Network::Testnet => bitcoin::Network::Testnet,
+            Network::Bitcoin => bitcoin::Network::Bitcoin,
         }
     }
 }
 #[frb(opaque)]
 #[derive(Clone)]
-pub struct DCoin {
+pub struct Coin {
     #[frb(ignore)]
     inner: signer::Coin,
 }
 
-impl DCoin {
+impl Coin {
+    #[frb(sync)]
     pub fn amount_sat(&self) -> u64 {
         self.inner.txout.value.to_sat()
     }
 
+    #[frb(sync)]
     pub fn amount_btc(&self) -> f64 {
         self.inner.txout.value.to_btc()
     }
 
+    #[frb(sync)]
     pub fn outpoint(&self) -> String {
         self.inner.outpoint.to_string()
     }
 }
 
-impl From<signer::Coin> for DCoin {
+impl From<signer::Coin> for Coin {
     fn from(value: signer::Coin) -> Self {
-        DCoin { inner: value }
+        Coin { inner: value }
     }
 }
 
-impl From<DCoin> for signer::Coin {
-    fn from(value: DCoin) -> Self {
+impl From<Coin> for signer::Coin {
+    fn from(value: Coin) -> Self {
         value.inner
     }
 }
 
-pub struct DPoolConfig {
+pub struct PoolConfig {
     pub denomination: f64,
     pub fee: u32,
     pub max_duration: u64,
     pub peers: usize,
-    pub network: DNetwork,
+    pub network: Network,
 }
 
-impl From<DPoolConfig> for interface::PoolConfig {
-    fn from(value: DPoolConfig) -> Self {
+impl From<PoolConfig> for interface::PoolConfig {
+    fn from(value: PoolConfig) -> Self {
         interface::PoolConfig {
             denomination: value.denomination,
             fee: value.fee,
@@ -81,35 +84,36 @@ impl From<DPoolConfig> for interface::PoolConfig {
 
 #[frb(opaque)]
 #[derive(Clone)]
-pub struct DMnemonic {
+pub struct Mnemonic {
     #[frb(ignore)]
     inner: bip39::Mnemonic,
 }
 
-impl DMnemonic {
+impl Mnemonic {
+    #[frb(sync)]
     pub fn from_string(value: String) -> Option<Self> {
         let inner = bip39::Mnemonic::from_str(&value).ok()?;
         Some(Self { inner })
     }
 }
 
-impl From<DMnemonic> for bip39::Mnemonic {
-    fn from(value: DMnemonic) -> Self {
+impl From<Mnemonic> for bip39::Mnemonic {
+    fn from(value: Mnemonic) -> Self {
         value.inner
     }
 }
 
-pub struct DPeerConfig {
-    pub mnemonics: DMnemonic,
+pub struct PeerConfig {
+    pub mnemonics: Mnemonic,
     pub electrum_url: String,
     pub electrum_port: u16,
-    pub input: DCoin,
-    pub output: DAddress,
+    pub input: Coin,
+    pub output: Address,
     pub relay: String,
 }
 
-impl From<DPeerConfig> for interface::PeerConfig {
-    fn from(value: DPeerConfig) -> Self {
+impl From<PeerConfig> for interface::PeerConfig {
+    fn from(value: PeerConfig) -> Self {
         interface::PeerConfig {
             mnemonics: value.mnemonics.into(),
             electrum_address: value.electrum_url,
@@ -123,26 +127,26 @@ impl From<DPeerConfig> for interface::PeerConfig {
 
 #[frb(opaque)]
 #[derive(Clone)]
-pub struct DAddress {
+pub struct Address {
     #[frb(ignore)]
     inner: bitcoin::Address<NetworkUnchecked>,
 }
 
-impl DAddress {
+impl Address {
     pub fn from_string(value: String) -> Option<Self> {
         let inner = bitcoin::Address::<NetworkUnchecked>::from_str(&value).ok()?;
         Some(Self { inner })
     }
 }
 
-impl From<DAddress> for bitcoin::Address<NetworkUnchecked> {
-    fn from(value: DAddress) -> Self {
+impl From<Address> for bitcoin::Address<NetworkUnchecked> {
+    fn from(value: Address) -> Self {
         value.inner
     }
 }
 
 pub struct ListCoinsResult {
-    pub coins: Vec<DCoin>,
+    pub coins: Vec<Coin>,
     pub error: String,
 }
 
@@ -152,7 +156,7 @@ pub fn list_coins(
     electrum_url: String,
     electrum_port: u16,
     range: (u32, u32),
-    network: DNetwork,
+    network: Network,
 ) -> ListCoinsResult {
     let mut res = ListCoinsResult {
         coins: Vec::new(),
@@ -179,17 +183,19 @@ pub struct CoinjoinResult {
 }
 
 impl CoinjoinResult {
+    #[frb(sync)]
     pub fn is_ok(&self) -> bool {
         !self.txid.is_empty() && self.error.is_empty()
     }
 
+    #[frb(sync)]
     pub fn is_error(&self) -> bool {
         self.txid.is_empty() && !self.error.is_empty()
     }
 }
 
 #[frb(sync)]
-pub fn initiate_coinjoin(config: DPoolConfig, peer: DPeerConfig) -> CoinjoinResult {
+pub fn initiate_coinjoin(config: PoolConfig, peer: PeerConfig) -> CoinjoinResult {
     let mut res = CoinjoinResult {
         txid: String::new(),
         error: String::new(),
@@ -203,12 +209,13 @@ pub fn initiate_coinjoin(config: DPoolConfig, peer: DPeerConfig) -> CoinjoinResu
 }
 
 #[frb(opaque)]
-pub struct DPool {
+pub struct Pool {
     #[frb(ignore)]
     inner: nostr::Pool,
 }
 
-impl DPool {
+impl Pool {
+    #[frb(sync)]
     pub fn denomination_sat(&self) -> Option<u64> {
         self.inner
             .payload
@@ -216,6 +223,7 @@ impl DPool {
             .map(|p| p.denomination.clone().to_sat())
     }
 
+    #[frb(sync)]
     pub fn denomination_btc(&self) -> Option<f64> {
         self.inner
             .payload
@@ -223,10 +231,12 @@ impl DPool {
             .map(|p| p.denomination.clone().to_btc())
     }
 
+    #[frb(sync)]
     pub fn peers(&self) -> Option<usize> {
         self.inner.payload.as_ref().map(|p| p.peers)
     }
 
+    #[frb(sync)]
     pub fn relay(&self) -> Option<String> {
         self.inner
             .payload
@@ -235,6 +245,7 @@ impl DPool {
             .flatten()
     }
 
+    #[frb(sync)]
     pub fn fee(&self) -> Option<u32> {
         self.inner.payload.as_ref().map(|p| {
             if let Fee::Fixed(fee) = p.fee {
@@ -246,20 +257,20 @@ impl DPool {
     }
 }
 
-impl From<nostr::Pool> for DPool {
+impl From<nostr::Pool> for Pool {
     fn from(value: nostr::Pool) -> Self {
         Self { inner: value }
     }
 }
 
-impl From<DPool> for nostr::Pool {
-    fn from(value: DPool) -> Self {
+impl From<Pool> for nostr::Pool {
+    fn from(value: Pool) -> Self {
         value.inner
     }
 }
 
 pub struct ListPoolsResult {
-    pub pools: Vec<DPool>,
+    pub pools: Vec<Pool>,
     pub error: String,
 }
 
@@ -279,7 +290,7 @@ pub fn list_pools(back: u64, timeout: u64, relay: String) -> ListPoolsResult {
 }
 
 #[frb(sync)]
-pub fn join_coinjoin(pool: DPool, peer: DPeerConfig) -> CoinjoinResult {
+pub fn join_coinjoin(pool: Pool, peer: PeerConfig) -> CoinjoinResult {
     let mut res = CoinjoinResult {
         txid: String::new(),
         error: String::new(),
