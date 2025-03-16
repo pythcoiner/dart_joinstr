@@ -484,6 +484,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "dart_joinstr"
+version = "0.1.0"
+dependencies = [
+ "flutter_rust_bridge",
+ "joinstr",
+]
+
+[[package]]
 name = "dashmap"
 version = "4.0.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1179,14 +1187,6 @@ dependencies = [
  "serde_json",
  "simple_electrum_client",
  "simple_nostr_client",
-]
-
-[[package]]
-name = "joinstr"
-version = "0.1.0"
-dependencies = [
- "flutter_rust_bridge",
- "joinstr 0.0.1",
 ]
 
 [[package]]

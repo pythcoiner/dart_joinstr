@@ -9,7 +9,6 @@ import 'dart:convert';
 import 'frb_generated.dart';
 import 'frb_generated.io.dart'
     if (dart.library.js_interop) 'frb_generated.web.dart';
-import 'lib.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
 /// Main entrypoint of the Rust API
@@ -65,113 +64,92 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
   String get codegenVersion => '2.8.0';
 
   @override
-  int get rustContentHash => 1484837764;
+  int get rustContentHash => -162717660;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
-        stem: 'joinstr',
+        stem: 'dart_joinstr',
         ioDirectory: 'rust/target/release/',
         webPrefix: 'pkg/',
       );
 }
 
 abstract class RustLibApi extends BaseApi {
-  double crateApiJoinstrCoinAmountBtc({required Coin that});
+  Future<DAddress?> crateApiJoinstrDAddressFromString({required String value});
 
-  BigInt crateApiJoinstrCoinAmountSat({required Coin that});
+  Future<double> crateApiJoinstrDCoinAmountBtc({required DCoin that});
 
-  RustCoin crateApiJoinstrCoinAutoAccessorGetInner({required Coin that});
+  Future<BigInt> crateApiJoinstrDCoinAmountSat({required DCoin that});
 
-  void crateApiJoinstrCoinAutoAccessorSetInner({
-    required Coin that,
-    required RustCoin inner,
+  Future<String> crateApiJoinstrDCoinOutpoint({required DCoin that});
+
+  Future<DMnemonic?> crateApiJoinstrDMnemonicFromString({
+    required String value,
   });
 
-  String crateApiJoinstrCoinOutpoint({required Coin that});
-
-  RustMnemonic crateApiJoinstrMnemonicAutoAccessorGetInner({
-    required Mnemonic that,
+  int crateApiJoinstrDPeerConfigAutoAccessorGetElectrumPort({
+    required DPeerConfig that,
   });
 
-  void crateApiJoinstrMnemonicAutoAccessorSetInner({
-    required Mnemonic that,
-    required RustMnemonic inner,
+  String crateApiJoinstrDPeerConfigAutoAccessorGetElectrumUrl({
+    required DPeerConfig that,
   });
 
-  Mnemonic? crateApiJoinstrMnemonicFromString({required String value});
-
-  int crateApiJoinstrPeerConfigAutoAccessorGetElectrumPort({
-    required PeerConfig that,
+  DCoin crateApiJoinstrDPeerConfigAutoAccessorGetInput({
+    required DPeerConfig that,
   });
 
-  String crateApiJoinstrPeerConfigAutoAccessorGetElectrumUrl({
-    required PeerConfig that,
+  DMnemonic crateApiJoinstrDPeerConfigAutoAccessorGetMnemonics({
+    required DPeerConfig that,
   });
 
-  Coin crateApiJoinstrPeerConfigAutoAccessorGetInput({
-    required PeerConfig that,
+  DAddress crateApiJoinstrDPeerConfigAutoAccessorGetOutput({
+    required DPeerConfig that,
   });
 
-  Mnemonic crateApiJoinstrPeerConfigAutoAccessorGetMnemonics({
-    required PeerConfig that,
+  String crateApiJoinstrDPeerConfigAutoAccessorGetRelay({
+    required DPeerConfig that,
   });
 
-  Address crateApiJoinstrPeerConfigAutoAccessorGetOutput({
-    required PeerConfig that,
-  });
-
-  String crateApiJoinstrPeerConfigAutoAccessorGetRelay({
-    required PeerConfig that,
-  });
-
-  void crateApiJoinstrPeerConfigAutoAccessorSetElectrumPort({
-    required PeerConfig that,
+  void crateApiJoinstrDPeerConfigAutoAccessorSetElectrumPort({
+    required DPeerConfig that,
     required int electrumPort,
   });
 
-  void crateApiJoinstrPeerConfigAutoAccessorSetElectrumUrl({
-    required PeerConfig that,
+  void crateApiJoinstrDPeerConfigAutoAccessorSetElectrumUrl({
+    required DPeerConfig that,
     required String electrumUrl,
   });
 
-  void crateApiJoinstrPeerConfigAutoAccessorSetInput({
-    required PeerConfig that,
-    required Coin input,
+  void crateApiJoinstrDPeerConfigAutoAccessorSetInput({
+    required DPeerConfig that,
+    required DCoin input,
   });
 
-  void crateApiJoinstrPeerConfigAutoAccessorSetMnemonics({
-    required PeerConfig that,
-    required Mnemonic mnemonics,
+  void crateApiJoinstrDPeerConfigAutoAccessorSetMnemonics({
+    required DPeerConfig that,
+    required DMnemonic mnemonics,
   });
 
-  void crateApiJoinstrPeerConfigAutoAccessorSetOutput({
-    required PeerConfig that,
-    required Address output,
+  void crateApiJoinstrDPeerConfigAutoAccessorSetOutput({
+    required DPeerConfig that,
+    required DAddress output,
   });
 
-  void crateApiJoinstrPeerConfigAutoAccessorSetRelay({
-    required PeerConfig that,
+  void crateApiJoinstrDPeerConfigAutoAccessorSetRelay({
+    required DPeerConfig that,
     required String relay,
   });
 
-  RustPool crateApiJoinstrPoolAutoAccessorGetInner({required Pool that});
+  Future<double?> crateApiJoinstrDPoolDenominationBtc({required DPool that});
 
-  void crateApiJoinstrPoolAutoAccessorSetInner({
-    required Pool that,
-    required RustPool inner,
-  });
+  Future<BigInt?> crateApiJoinstrDPoolDenominationSat({required DPool that});
 
-  double? crateApiJoinstrPoolDenominationBtc({required Pool that});
+  Future<int?> crateApiJoinstrDPoolFee({required DPool that});
 
-  BigInt? crateApiJoinstrPoolDenominationSat({required Pool that});
+  Future<BigInt?> crateApiJoinstrDPoolPeers({required DPool that});
 
-  int? crateApiJoinstrPoolFee({required Pool that});
-
-  BigInt? crateApiJoinstrPoolPeers({required Pool that});
-
-  String? crateApiJoinstrPoolRelay({required Pool that});
-
-  Address? crateApiJoinstrAddressFromString({required String value});
+  Future<String?> crateApiJoinstrDPoolRelay({required DPool that});
 
   Future<bool> crateApiJoinstrCoinjoinResultIsError({
     required CoinjoinResult that,
@@ -184,13 +162,13 @@ abstract class RustLibApi extends BaseApi {
   Future<void> crateApiJoinstrInitApp();
 
   CoinjoinResult crateApiJoinstrInitiateCoinjoin({
-    required PoolConfig config,
-    required PeerConfig peer,
+    required DPoolConfig config,
+    required DPeerConfig peer,
   });
 
   CoinjoinResult crateApiJoinstrJoinCoinjoin({
-    required Pool pool,
-    required PeerConfig peer,
+    required DPool pool,
+    required DPeerConfig peer,
   });
 
   ListCoinsResult crateApiJoinstrListCoins({
@@ -198,7 +176,7 @@ abstract class RustLibApi extends BaseApi {
     required String electrumUrl,
     required int electrumPort,
     required (int, int) range,
-    required Network network,
+    required DNetwork network,
   });
 
   ListPoolsResult crateApiJoinstrListPools({
@@ -207,57 +185,41 @@ abstract class RustLibApi extends BaseApi {
     required String relay,
   });
 
-  RustArcIncrementStrongCountFnType get rust_arc_increment_strong_count_Coin;
-
-  RustArcDecrementStrongCountFnType get rust_arc_decrement_strong_count_Coin;
-
-  CrossPlatformFinalizerArg get rust_arc_decrement_strong_count_CoinPtr;
-
   RustArcIncrementStrongCountFnType
-  get rust_arc_increment_strong_count_Mnemonic;
+  get rust_arc_increment_strong_count_DAddress;
 
   RustArcDecrementStrongCountFnType
-  get rust_arc_decrement_strong_count_Mnemonic;
+  get rust_arc_decrement_strong_count_DAddress;
 
-  CrossPlatformFinalizerArg get rust_arc_decrement_strong_count_MnemonicPtr;
+  CrossPlatformFinalizerArg get rust_arc_decrement_strong_count_DAddressPtr;
 
-  RustArcIncrementStrongCountFnType
-  get rust_arc_increment_strong_count_PeerConfig;
+  RustArcIncrementStrongCountFnType get rust_arc_increment_strong_count_DCoin;
 
-  RustArcDecrementStrongCountFnType
-  get rust_arc_decrement_strong_count_PeerConfig;
+  RustArcDecrementStrongCountFnType get rust_arc_decrement_strong_count_DCoin;
 
-  CrossPlatformFinalizerArg get rust_arc_decrement_strong_count_PeerConfigPtr;
-
-  RustArcIncrementStrongCountFnType get rust_arc_increment_strong_count_Pool;
-
-  RustArcDecrementStrongCountFnType get rust_arc_decrement_strong_count_Pool;
-
-  CrossPlatformFinalizerArg get rust_arc_decrement_strong_count_PoolPtr;
+  CrossPlatformFinalizerArg get rust_arc_decrement_strong_count_DCoinPtr;
 
   RustArcIncrementStrongCountFnType
-  get rust_arc_increment_strong_count_RustCoin;
+  get rust_arc_increment_strong_count_DMnemonic;
 
   RustArcDecrementStrongCountFnType
-  get rust_arc_decrement_strong_count_RustCoin;
+  get rust_arc_decrement_strong_count_DMnemonic;
 
-  CrossPlatformFinalizerArg get rust_arc_decrement_strong_count_RustCoinPtr;
+  CrossPlatformFinalizerArg get rust_arc_decrement_strong_count_DMnemonicPtr;
 
   RustArcIncrementStrongCountFnType
-  get rust_arc_increment_strong_count_RustMnemonic;
+  get rust_arc_increment_strong_count_DPeerConfig;
 
   RustArcDecrementStrongCountFnType
-  get rust_arc_decrement_strong_count_RustMnemonic;
+  get rust_arc_decrement_strong_count_DPeerConfig;
 
-  CrossPlatformFinalizerArg get rust_arc_decrement_strong_count_RustMnemonicPtr;
+  CrossPlatformFinalizerArg get rust_arc_decrement_strong_count_DPeerConfigPtr;
 
-  RustArcIncrementStrongCountFnType
-  get rust_arc_increment_strong_count_RustPool;
+  RustArcIncrementStrongCountFnType get rust_arc_increment_strong_count_DPool;
 
-  RustArcDecrementStrongCountFnType
-  get rust_arc_decrement_strong_count_RustPool;
+  RustArcDecrementStrongCountFnType get rust_arc_decrement_strong_count_DPool;
 
-  CrossPlatformFinalizerArg get rust_arc_decrement_strong_count_RustPoolPtr;
+  CrossPlatformFinalizerArg get rust_arc_decrement_strong_count_DPoolPtr;
 }
 
 class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
@@ -269,264 +231,184 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   });
 
   @override
-  double crateApiJoinstrCoinAmountBtc({required Coin that}) {
-    return handler.executeSync(
-      SyncTask(
-        callFfi: () {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCoin(
-            that,
-            serializer,
-          );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 1)!;
-        },
-        codec: SseCodec(
-          decodeSuccessData: sse_decode_f_64,
-          decodeErrorData: null,
-        ),
-        constMeta: kCrateApiJoinstrCoinAmountBtcConstMeta,
-        argValues: [that],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta get kCrateApiJoinstrCoinAmountBtcConstMeta =>
-      const TaskConstMeta(debugName: "Coin_amount_btc", argNames: ["that"]);
-
-  @override
-  BigInt crateApiJoinstrCoinAmountSat({required Coin that}) {
-    return handler.executeSync(
-      SyncTask(
-        callFfi: () {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCoin(
-            that,
-            serializer,
-          );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 2)!;
-        },
-        codec: SseCodec(
-          decodeSuccessData: sse_decode_u_64,
-          decodeErrorData: null,
-        ),
-        constMeta: kCrateApiJoinstrCoinAmountSatConstMeta,
-        argValues: [that],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta get kCrateApiJoinstrCoinAmountSatConstMeta =>
-      const TaskConstMeta(debugName: "Coin_amount_sat", argNames: ["that"]);
-
-  @override
-  RustCoin crateApiJoinstrCoinAutoAccessorGetInner({required Coin that}) {
-    return handler.executeSync(
-      SyncTask(
-        callFfi: () {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCoin(
-            that,
-            serializer,
-          );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 3)!;
-        },
-        codec: SseCodec(
-          decodeSuccessData:
-              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRustCoin,
-          decodeErrorData: null,
-        ),
-        constMeta: kCrateApiJoinstrCoinAutoAccessorGetInnerConstMeta,
-        argValues: [that],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta get kCrateApiJoinstrCoinAutoAccessorGetInnerConstMeta =>
-      const TaskConstMeta(
-        debugName: "Coin_auto_accessor_get_inner",
-        argNames: ["that"],
-      );
-
-  @override
-  void crateApiJoinstrCoinAutoAccessorSetInner({
-    required Coin that,
-    required RustCoin inner,
-  }) {
-    return handler.executeSync(
-      SyncTask(
-        callFfi: () {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCoin(
-            that,
-            serializer,
-          );
-          sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRustCoin(
-            inner,
-            serializer,
-          );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 4)!;
-        },
-        codec: SseCodec(
-          decodeSuccessData: sse_decode_unit,
-          decodeErrorData: null,
-        ),
-        constMeta: kCrateApiJoinstrCoinAutoAccessorSetInnerConstMeta,
-        argValues: [that, inner],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta get kCrateApiJoinstrCoinAutoAccessorSetInnerConstMeta =>
-      const TaskConstMeta(
-        debugName: "Coin_auto_accessor_set_inner",
-        argNames: ["that", "inner"],
-      );
-
-  @override
-  String crateApiJoinstrCoinOutpoint({required Coin that}) {
-    return handler.executeSync(
-      SyncTask(
-        callFfi: () {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCoin(
-            that,
-            serializer,
-          );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 5)!;
-        },
-        codec: SseCodec(
-          decodeSuccessData: sse_decode_String,
-          decodeErrorData: null,
-        ),
-        constMeta: kCrateApiJoinstrCoinOutpointConstMeta,
-        argValues: [that],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta get kCrateApiJoinstrCoinOutpointConstMeta =>
-      const TaskConstMeta(debugName: "Coin_outpoint", argNames: ["that"]);
-
-  @override
-  RustMnemonic crateApiJoinstrMnemonicAutoAccessorGetInner({
-    required Mnemonic that,
-  }) {
-    return handler.executeSync(
-      SyncTask(
-        callFfi: () {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMnemonic(
-            that,
-            serializer,
-          );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 6)!;
-        },
-        codec: SseCodec(
-          decodeSuccessData:
-              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRustMnemonic,
-          decodeErrorData: null,
-        ),
-        constMeta: kCrateApiJoinstrMnemonicAutoAccessorGetInnerConstMeta,
-        argValues: [that],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta get kCrateApiJoinstrMnemonicAutoAccessorGetInnerConstMeta =>
-      const TaskConstMeta(
-        debugName: "Mnemonic_auto_accessor_get_inner",
-        argNames: ["that"],
-      );
-
-  @override
-  void crateApiJoinstrMnemonicAutoAccessorSetInner({
-    required Mnemonic that,
-    required RustMnemonic inner,
-  }) {
-    return handler.executeSync(
-      SyncTask(
-        callFfi: () {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMnemonic(
-            that,
-            serializer,
-          );
-          sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRustMnemonic(
-            inner,
-            serializer,
-          );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 7)!;
-        },
-        codec: SseCodec(
-          decodeSuccessData: sse_decode_unit,
-          decodeErrorData: null,
-        ),
-        constMeta: kCrateApiJoinstrMnemonicAutoAccessorSetInnerConstMeta,
-        argValues: [that, inner],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta get kCrateApiJoinstrMnemonicAutoAccessorSetInnerConstMeta =>
-      const TaskConstMeta(
-        debugName: "Mnemonic_auto_accessor_set_inner",
-        argNames: ["that", "inner"],
-      );
-
-  @override
-  Mnemonic? crateApiJoinstrMnemonicFromString({required String value}) {
-    return handler.executeSync(
-      SyncTask(
-        callFfi: () {
+  Future<DAddress?> crateApiJoinstrDAddressFromString({required String value}) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
           final serializer = SseSerializer(generalizedFrbRustBinding);
           sse_encode_String(value, serializer);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 8)!;
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 1,
+            port: port_,
+          );
         },
         codec: SseCodec(
           decodeSuccessData:
-              sse_decode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMnemonic,
+              sse_decode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDAddress,
           decodeErrorData: null,
         ),
-        constMeta: kCrateApiJoinstrMnemonicFromStringConstMeta,
+        constMeta: kCrateApiJoinstrDAddressFromStringConstMeta,
         argValues: [value],
         apiImpl: this,
       ),
     );
   }
 
-  TaskConstMeta get kCrateApiJoinstrMnemonicFromStringConstMeta =>
+  TaskConstMeta get kCrateApiJoinstrDAddressFromStringConstMeta =>
       const TaskConstMeta(
-        debugName: "Mnemonic_from_string",
+        debugName: "DAddress_from_string",
         argNames: ["value"],
       );
 
   @override
-  int crateApiJoinstrPeerConfigAutoAccessorGetElectrumPort({
-    required PeerConfig that,
+  Future<double> crateApiJoinstrDCoinAmountBtc({required DCoin that}) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDCoin(
+            that,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 2,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_f_64,
+          decodeErrorData: null,
+        ),
+        constMeta: kCrateApiJoinstrDCoinAmountBtcConstMeta,
+        argValues: [that],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateApiJoinstrDCoinAmountBtcConstMeta =>
+      const TaskConstMeta(debugName: "DCoin_amount_btc", argNames: ["that"]);
+
+  @override
+  Future<BigInt> crateApiJoinstrDCoinAmountSat({required DCoin that}) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDCoin(
+            that,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 3,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_u_64,
+          decodeErrorData: null,
+        ),
+        constMeta: kCrateApiJoinstrDCoinAmountSatConstMeta,
+        argValues: [that],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateApiJoinstrDCoinAmountSatConstMeta =>
+      const TaskConstMeta(debugName: "DCoin_amount_sat", argNames: ["that"]);
+
+  @override
+  Future<String> crateApiJoinstrDCoinOutpoint({required DCoin that}) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDCoin(
+            that,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 4,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_String,
+          decodeErrorData: null,
+        ),
+        constMeta: kCrateApiJoinstrDCoinOutpointConstMeta,
+        argValues: [that],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateApiJoinstrDCoinOutpointConstMeta =>
+      const TaskConstMeta(debugName: "DCoin_outpoint", argNames: ["that"]);
+
+  @override
+  Future<DMnemonic?> crateApiJoinstrDMnemonicFromString({
+    required String value,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_String(value, serializer);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 5,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData:
+              sse_decode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDMnemonic,
+          decodeErrorData: null,
+        ),
+        constMeta: kCrateApiJoinstrDMnemonicFromStringConstMeta,
+        argValues: [value],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateApiJoinstrDMnemonicFromStringConstMeta =>
+      const TaskConstMeta(
+        debugName: "DMnemonic_from_string",
+        argNames: ["value"],
+      );
+
+  @override
+  int crateApiJoinstrDPeerConfigAutoAccessorGetElectrumPort({
+    required DPeerConfig that,
   }) {
     return handler.executeSync(
       SyncTask(
         callFfi: () {
           final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPeerConfig(
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDPeerConfig(
             that,
             serializer,
           );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 9)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 6)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_u_16,
           decodeErrorData: null,
         ),
         constMeta:
-            kCrateApiJoinstrPeerConfigAutoAccessorGetElectrumPortConstMeta,
+            kCrateApiJoinstrDPeerConfigAutoAccessorGetElectrumPortConstMeta,
         argValues: [that],
         apiImpl: this,
       ),
@@ -534,194 +416,195 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   TaskConstMeta
-  get kCrateApiJoinstrPeerConfigAutoAccessorGetElectrumPortConstMeta =>
+  get kCrateApiJoinstrDPeerConfigAutoAccessorGetElectrumPortConstMeta =>
       const TaskConstMeta(
-        debugName: "PeerConfig_auto_accessor_get_electrum_port",
+        debugName: "DPeerConfig_auto_accessor_get_electrum_port",
         argNames: ["that"],
       );
 
   @override
-  String crateApiJoinstrPeerConfigAutoAccessorGetElectrumUrl({
-    required PeerConfig that,
+  String crateApiJoinstrDPeerConfigAutoAccessorGetElectrumUrl({
+    required DPeerConfig that,
   }) {
     return handler.executeSync(
       SyncTask(
         callFfi: () {
           final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPeerConfig(
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDPeerConfig(
+            that,
+            serializer,
+          );
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 7)!;
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_String,
+          decodeErrorData: null,
+        ),
+        constMeta:
+            kCrateApiJoinstrDPeerConfigAutoAccessorGetElectrumUrlConstMeta,
+        argValues: [that],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta
+  get kCrateApiJoinstrDPeerConfigAutoAccessorGetElectrumUrlConstMeta =>
+      const TaskConstMeta(
+        debugName: "DPeerConfig_auto_accessor_get_electrum_url",
+        argNames: ["that"],
+      );
+
+  @override
+  DCoin crateApiJoinstrDPeerConfigAutoAccessorGetInput({
+    required DPeerConfig that,
+  }) {
+    return handler.executeSync(
+      SyncTask(
+        callFfi: () {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDPeerConfig(
+            that,
+            serializer,
+          );
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 8)!;
+        },
+        codec: SseCodec(
+          decodeSuccessData:
+              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDCoin,
+          decodeErrorData: null,
+        ),
+        constMeta: kCrateApiJoinstrDPeerConfigAutoAccessorGetInputConstMeta,
+        argValues: [that],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateApiJoinstrDPeerConfigAutoAccessorGetInputConstMeta =>
+      const TaskConstMeta(
+        debugName: "DPeerConfig_auto_accessor_get_input",
+        argNames: ["that"],
+      );
+
+  @override
+  DMnemonic crateApiJoinstrDPeerConfigAutoAccessorGetMnemonics({
+    required DPeerConfig that,
+  }) {
+    return handler.executeSync(
+      SyncTask(
+        callFfi: () {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDPeerConfig(
+            that,
+            serializer,
+          );
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 9)!;
+        },
+        codec: SseCodec(
+          decodeSuccessData:
+              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDMnemonic,
+          decodeErrorData: null,
+        ),
+        constMeta: kCrateApiJoinstrDPeerConfigAutoAccessorGetMnemonicsConstMeta,
+        argValues: [that],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta
+  get kCrateApiJoinstrDPeerConfigAutoAccessorGetMnemonicsConstMeta =>
+      const TaskConstMeta(
+        debugName: "DPeerConfig_auto_accessor_get_mnemonics",
+        argNames: ["that"],
+      );
+
+  @override
+  DAddress crateApiJoinstrDPeerConfigAutoAccessorGetOutput({
+    required DPeerConfig that,
+  }) {
+    return handler.executeSync(
+      SyncTask(
+        callFfi: () {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDPeerConfig(
             that,
             serializer,
           );
           return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 10)!;
         },
         codec: SseCodec(
-          decodeSuccessData: sse_decode_String,
+          decodeSuccessData:
+              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDAddress,
           decodeErrorData: null,
         ),
-        constMeta:
-            kCrateApiJoinstrPeerConfigAutoAccessorGetElectrumUrlConstMeta,
+        constMeta: kCrateApiJoinstrDPeerConfigAutoAccessorGetOutputConstMeta,
         argValues: [that],
         apiImpl: this,
       ),
     );
   }
 
-  TaskConstMeta
-  get kCrateApiJoinstrPeerConfigAutoAccessorGetElectrumUrlConstMeta =>
+  TaskConstMeta get kCrateApiJoinstrDPeerConfigAutoAccessorGetOutputConstMeta =>
       const TaskConstMeta(
-        debugName: "PeerConfig_auto_accessor_get_electrum_url",
+        debugName: "DPeerConfig_auto_accessor_get_output",
         argNames: ["that"],
       );
 
   @override
-  Coin crateApiJoinstrPeerConfigAutoAccessorGetInput({
-    required PeerConfig that,
+  String crateApiJoinstrDPeerConfigAutoAccessorGetRelay({
+    required DPeerConfig that,
   }) {
     return handler.executeSync(
       SyncTask(
         callFfi: () {
           final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPeerConfig(
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDPeerConfig(
             that,
             serializer,
           );
           return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 11)!;
         },
         codec: SseCodec(
-          decodeSuccessData:
-              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCoin,
-          decodeErrorData: null,
-        ),
-        constMeta: kCrateApiJoinstrPeerConfigAutoAccessorGetInputConstMeta,
-        argValues: [that],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta get kCrateApiJoinstrPeerConfigAutoAccessorGetInputConstMeta =>
-      const TaskConstMeta(
-        debugName: "PeerConfig_auto_accessor_get_input",
-        argNames: ["that"],
-      );
-
-  @override
-  Mnemonic crateApiJoinstrPeerConfigAutoAccessorGetMnemonics({
-    required PeerConfig that,
-  }) {
-    return handler.executeSync(
-      SyncTask(
-        callFfi: () {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPeerConfig(
-            that,
-            serializer,
-          );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 12)!;
-        },
-        codec: SseCodec(
-          decodeSuccessData:
-              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMnemonic,
-          decodeErrorData: null,
-        ),
-        constMeta: kCrateApiJoinstrPeerConfigAutoAccessorGetMnemonicsConstMeta,
-        argValues: [that],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta
-  get kCrateApiJoinstrPeerConfigAutoAccessorGetMnemonicsConstMeta =>
-      const TaskConstMeta(
-        debugName: "PeerConfig_auto_accessor_get_mnemonics",
-        argNames: ["that"],
-      );
-
-  @override
-  Address crateApiJoinstrPeerConfigAutoAccessorGetOutput({
-    required PeerConfig that,
-  }) {
-    return handler.executeSync(
-      SyncTask(
-        callFfi: () {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPeerConfig(
-            that,
-            serializer,
-          );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 13)!;
-        },
-        codec: SseCodec(
-          decodeSuccessData: sse_decode_address,
-          decodeErrorData: null,
-        ),
-        constMeta: kCrateApiJoinstrPeerConfigAutoAccessorGetOutputConstMeta,
-        argValues: [that],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta get kCrateApiJoinstrPeerConfigAutoAccessorGetOutputConstMeta =>
-      const TaskConstMeta(
-        debugName: "PeerConfig_auto_accessor_get_output",
-        argNames: ["that"],
-      );
-
-  @override
-  String crateApiJoinstrPeerConfigAutoAccessorGetRelay({
-    required PeerConfig that,
-  }) {
-    return handler.executeSync(
-      SyncTask(
-        callFfi: () {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPeerConfig(
-            that,
-            serializer,
-          );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 14)!;
-        },
-        codec: SseCodec(
           decodeSuccessData: sse_decode_String,
           decodeErrorData: null,
         ),
-        constMeta: kCrateApiJoinstrPeerConfigAutoAccessorGetRelayConstMeta,
+        constMeta: kCrateApiJoinstrDPeerConfigAutoAccessorGetRelayConstMeta,
         argValues: [that],
         apiImpl: this,
       ),
     );
   }
 
-  TaskConstMeta get kCrateApiJoinstrPeerConfigAutoAccessorGetRelayConstMeta =>
+  TaskConstMeta get kCrateApiJoinstrDPeerConfigAutoAccessorGetRelayConstMeta =>
       const TaskConstMeta(
-        debugName: "PeerConfig_auto_accessor_get_relay",
+        debugName: "DPeerConfig_auto_accessor_get_relay",
         argNames: ["that"],
       );
 
   @override
-  void crateApiJoinstrPeerConfigAutoAccessorSetElectrumPort({
-    required PeerConfig that,
+  void crateApiJoinstrDPeerConfigAutoAccessorSetElectrumPort({
+    required DPeerConfig that,
     required int electrumPort,
   }) {
     return handler.executeSync(
       SyncTask(
         callFfi: () {
           final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPeerConfig(
+          sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDPeerConfig(
             that,
             serializer,
           );
           sse_encode_u_16(electrumPort, serializer);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 15)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 12)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_unit,
           decodeErrorData: null,
         ),
         constMeta:
-            kCrateApiJoinstrPeerConfigAutoAccessorSetElectrumPortConstMeta,
+            kCrateApiJoinstrDPeerConfigAutoAccessorSetElectrumPortConstMeta,
         argValues: [that, electrumPort],
         apiImpl: this,
       ),
@@ -729,34 +612,34 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   TaskConstMeta
-  get kCrateApiJoinstrPeerConfigAutoAccessorSetElectrumPortConstMeta =>
+  get kCrateApiJoinstrDPeerConfigAutoAccessorSetElectrumPortConstMeta =>
       const TaskConstMeta(
-        debugName: "PeerConfig_auto_accessor_set_electrum_port",
+        debugName: "DPeerConfig_auto_accessor_set_electrum_port",
         argNames: ["that", "electrumPort"],
       );
 
   @override
-  void crateApiJoinstrPeerConfigAutoAccessorSetElectrumUrl({
-    required PeerConfig that,
+  void crateApiJoinstrDPeerConfigAutoAccessorSetElectrumUrl({
+    required DPeerConfig that,
     required String electrumUrl,
   }) {
     return handler.executeSync(
       SyncTask(
         callFfi: () {
           final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPeerConfig(
+          sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDPeerConfig(
             that,
             serializer,
           );
           sse_encode_String(electrumUrl, serializer);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 16)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 13)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_unit,
           decodeErrorData: null,
         ),
         constMeta:
-            kCrateApiJoinstrPeerConfigAutoAccessorSetElectrumUrlConstMeta,
+            kCrateApiJoinstrDPeerConfigAutoAccessorSetElectrumUrlConstMeta,
         argValues: [that, electrumUrl],
         apiImpl: this,
       ),
@@ -764,72 +647,72 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   TaskConstMeta
-  get kCrateApiJoinstrPeerConfigAutoAccessorSetElectrumUrlConstMeta =>
+  get kCrateApiJoinstrDPeerConfigAutoAccessorSetElectrumUrlConstMeta =>
       const TaskConstMeta(
-        debugName: "PeerConfig_auto_accessor_set_electrum_url",
+        debugName: "DPeerConfig_auto_accessor_set_electrum_url",
         argNames: ["that", "electrumUrl"],
       );
 
   @override
-  void crateApiJoinstrPeerConfigAutoAccessorSetInput({
-    required PeerConfig that,
-    required Coin input,
+  void crateApiJoinstrDPeerConfigAutoAccessorSetInput({
+    required DPeerConfig that,
+    required DCoin input,
   }) {
     return handler.executeSync(
       SyncTask(
         callFfi: () {
           final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPeerConfig(
+          sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDPeerConfig(
             that,
             serializer,
           );
-          sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCoin(
+          sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDCoin(
             input,
             serializer,
           );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 17)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 14)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_unit,
           decodeErrorData: null,
         ),
-        constMeta: kCrateApiJoinstrPeerConfigAutoAccessorSetInputConstMeta,
+        constMeta: kCrateApiJoinstrDPeerConfigAutoAccessorSetInputConstMeta,
         argValues: [that, input],
         apiImpl: this,
       ),
     );
   }
 
-  TaskConstMeta get kCrateApiJoinstrPeerConfigAutoAccessorSetInputConstMeta =>
+  TaskConstMeta get kCrateApiJoinstrDPeerConfigAutoAccessorSetInputConstMeta =>
       const TaskConstMeta(
-        debugName: "PeerConfig_auto_accessor_set_input",
+        debugName: "DPeerConfig_auto_accessor_set_input",
         argNames: ["that", "input"],
       );
 
   @override
-  void crateApiJoinstrPeerConfigAutoAccessorSetMnemonics({
-    required PeerConfig that,
-    required Mnemonic mnemonics,
+  void crateApiJoinstrDPeerConfigAutoAccessorSetMnemonics({
+    required DPeerConfig that,
+    required DMnemonic mnemonics,
   }) {
     return handler.executeSync(
       SyncTask(
         callFfi: () {
           final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPeerConfig(
+          sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDPeerConfig(
             that,
             serializer,
           );
-          sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMnemonic(
+          sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDMnemonic(
             mnemonics,
             serializer,
           );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 18)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 15)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_unit,
           decodeErrorData: null,
         ),
-        constMeta: kCrateApiJoinstrPeerConfigAutoAccessorSetMnemonicsConstMeta,
+        constMeta: kCrateApiJoinstrDPeerConfigAutoAccessorSetMnemonicsConstMeta,
         argValues: [that, mnemonics],
         apiImpl: this,
       ),
@@ -837,305 +720,241 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   TaskConstMeta
-  get kCrateApiJoinstrPeerConfigAutoAccessorSetMnemonicsConstMeta =>
+  get kCrateApiJoinstrDPeerConfigAutoAccessorSetMnemonicsConstMeta =>
       const TaskConstMeta(
-        debugName: "PeerConfig_auto_accessor_set_mnemonics",
+        debugName: "DPeerConfig_auto_accessor_set_mnemonics",
         argNames: ["that", "mnemonics"],
       );
 
   @override
-  void crateApiJoinstrPeerConfigAutoAccessorSetOutput({
-    required PeerConfig that,
-    required Address output,
+  void crateApiJoinstrDPeerConfigAutoAccessorSetOutput({
+    required DPeerConfig that,
+    required DAddress output,
   }) {
     return handler.executeSync(
       SyncTask(
         callFfi: () {
           final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPeerConfig(
+          sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDPeerConfig(
             that,
             serializer,
           );
-          sse_encode_address(output, serializer);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 19)!;
+          sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDAddress(
+            output,
+            serializer,
+          );
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 16)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_unit,
           decodeErrorData: null,
         ),
-        constMeta: kCrateApiJoinstrPeerConfigAutoAccessorSetOutputConstMeta,
+        constMeta: kCrateApiJoinstrDPeerConfigAutoAccessorSetOutputConstMeta,
         argValues: [that, output],
         apiImpl: this,
       ),
     );
   }
 
-  TaskConstMeta get kCrateApiJoinstrPeerConfigAutoAccessorSetOutputConstMeta =>
+  TaskConstMeta get kCrateApiJoinstrDPeerConfigAutoAccessorSetOutputConstMeta =>
       const TaskConstMeta(
-        debugName: "PeerConfig_auto_accessor_set_output",
+        debugName: "DPeerConfig_auto_accessor_set_output",
         argNames: ["that", "output"],
       );
 
   @override
-  void crateApiJoinstrPeerConfigAutoAccessorSetRelay({
-    required PeerConfig that,
+  void crateApiJoinstrDPeerConfigAutoAccessorSetRelay({
+    required DPeerConfig that,
     required String relay,
   }) {
     return handler.executeSync(
       SyncTask(
         callFfi: () {
           final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPeerConfig(
+          sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDPeerConfig(
             that,
             serializer,
           );
           sse_encode_String(relay, serializer);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 20)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 17)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_unit,
           decodeErrorData: null,
         ),
-        constMeta: kCrateApiJoinstrPeerConfigAutoAccessorSetRelayConstMeta,
+        constMeta: kCrateApiJoinstrDPeerConfigAutoAccessorSetRelayConstMeta,
         argValues: [that, relay],
         apiImpl: this,
       ),
     );
   }
 
-  TaskConstMeta get kCrateApiJoinstrPeerConfigAutoAccessorSetRelayConstMeta =>
+  TaskConstMeta get kCrateApiJoinstrDPeerConfigAutoAccessorSetRelayConstMeta =>
       const TaskConstMeta(
-        debugName: "PeerConfig_auto_accessor_set_relay",
+        debugName: "DPeerConfig_auto_accessor_set_relay",
         argNames: ["that", "relay"],
       );
 
   @override
-  RustPool crateApiJoinstrPoolAutoAccessorGetInner({required Pool that}) {
-    return handler.executeSync(
-      SyncTask(
-        callFfi: () {
+  Future<double?> crateApiJoinstrDPoolDenominationBtc({required DPool that}) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
           final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPool(
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDPool(
             that,
             serializer,
           );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 21)!;
-        },
-        codec: SseCodec(
-          decodeSuccessData:
-              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRustPool,
-          decodeErrorData: null,
-        ),
-        constMeta: kCrateApiJoinstrPoolAutoAccessorGetInnerConstMeta,
-        argValues: [that],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta get kCrateApiJoinstrPoolAutoAccessorGetInnerConstMeta =>
-      const TaskConstMeta(
-        debugName: "Pool_auto_accessor_get_inner",
-        argNames: ["that"],
-      );
-
-  @override
-  void crateApiJoinstrPoolAutoAccessorSetInner({
-    required Pool that,
-    required RustPool inner,
-  }) {
-    return handler.executeSync(
-      SyncTask(
-        callFfi: () {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPool(
-            that,
+          pdeCallFfi(
+            generalizedFrbRustBinding,
             serializer,
+            funcId: 18,
+            port: port_,
           );
-          sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRustPool(
-            inner,
-            serializer,
-          );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 22)!;
-        },
-        codec: SseCodec(
-          decodeSuccessData: sse_decode_unit,
-          decodeErrorData: null,
-        ),
-        constMeta: kCrateApiJoinstrPoolAutoAccessorSetInnerConstMeta,
-        argValues: [that, inner],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta get kCrateApiJoinstrPoolAutoAccessorSetInnerConstMeta =>
-      const TaskConstMeta(
-        debugName: "Pool_auto_accessor_set_inner",
-        argNames: ["that", "inner"],
-      );
-
-  @override
-  double? crateApiJoinstrPoolDenominationBtc({required Pool that}) {
-    return handler.executeSync(
-      SyncTask(
-        callFfi: () {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPool(
-            that,
-            serializer,
-          );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 23)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_opt_box_autoadd_f_64,
           decodeErrorData: null,
         ),
-        constMeta: kCrateApiJoinstrPoolDenominationBtcConstMeta,
+        constMeta: kCrateApiJoinstrDPoolDenominationBtcConstMeta,
         argValues: [that],
         apiImpl: this,
       ),
     );
   }
 
-  TaskConstMeta get kCrateApiJoinstrPoolDenominationBtcConstMeta =>
+  TaskConstMeta get kCrateApiJoinstrDPoolDenominationBtcConstMeta =>
       const TaskConstMeta(
-        debugName: "Pool_denomination_btc",
+        debugName: "DPool_denomination_btc",
         argNames: ["that"],
       );
 
   @override
-  BigInt? crateApiJoinstrPoolDenominationSat({required Pool that}) {
-    return handler.executeSync(
-      SyncTask(
-        callFfi: () {
+  Future<BigInt?> crateApiJoinstrDPoolDenominationSat({required DPool that}) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
           final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPool(
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDPool(
             that,
             serializer,
           );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 24)!;
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 19,
+            port: port_,
+          );
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_opt_box_autoadd_u_64,
           decodeErrorData: null,
         ),
-        constMeta: kCrateApiJoinstrPoolDenominationSatConstMeta,
+        constMeta: kCrateApiJoinstrDPoolDenominationSatConstMeta,
         argValues: [that],
         apiImpl: this,
       ),
     );
   }
 
-  TaskConstMeta get kCrateApiJoinstrPoolDenominationSatConstMeta =>
+  TaskConstMeta get kCrateApiJoinstrDPoolDenominationSatConstMeta =>
       const TaskConstMeta(
-        debugName: "Pool_denomination_sat",
+        debugName: "DPool_denomination_sat",
         argNames: ["that"],
       );
 
   @override
-  int? crateApiJoinstrPoolFee({required Pool that}) {
-    return handler.executeSync(
-      SyncTask(
-        callFfi: () {
+  Future<int?> crateApiJoinstrDPoolFee({required DPool that}) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
           final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPool(
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDPool(
             that,
             serializer,
           );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 25)!;
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 20,
+            port: port_,
+          );
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_opt_box_autoadd_u_32,
           decodeErrorData: null,
         ),
-        constMeta: kCrateApiJoinstrPoolFeeConstMeta,
+        constMeta: kCrateApiJoinstrDPoolFeeConstMeta,
         argValues: [that],
         apiImpl: this,
       ),
     );
   }
 
-  TaskConstMeta get kCrateApiJoinstrPoolFeeConstMeta =>
-      const TaskConstMeta(debugName: "Pool_fee", argNames: ["that"]);
+  TaskConstMeta get kCrateApiJoinstrDPoolFeeConstMeta =>
+      const TaskConstMeta(debugName: "DPool_fee", argNames: ["that"]);
 
   @override
-  BigInt? crateApiJoinstrPoolPeers({required Pool that}) {
-    return handler.executeSync(
-      SyncTask(
-        callFfi: () {
+  Future<BigInt?> crateApiJoinstrDPoolPeers({required DPool that}) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
           final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPool(
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDPool(
             that,
             serializer,
           );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 26)!;
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 21,
+            port: port_,
+          );
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_opt_box_autoadd_usize,
           decodeErrorData: null,
         ),
-        constMeta: kCrateApiJoinstrPoolPeersConstMeta,
+        constMeta: kCrateApiJoinstrDPoolPeersConstMeta,
         argValues: [that],
         apiImpl: this,
       ),
     );
   }
 
-  TaskConstMeta get kCrateApiJoinstrPoolPeersConstMeta =>
-      const TaskConstMeta(debugName: "Pool_peers", argNames: ["that"]);
+  TaskConstMeta get kCrateApiJoinstrDPoolPeersConstMeta =>
+      const TaskConstMeta(debugName: "DPool_peers", argNames: ["that"]);
 
   @override
-  String? crateApiJoinstrPoolRelay({required Pool that}) {
-    return handler.executeSync(
-      SyncTask(
-        callFfi: () {
+  Future<String?> crateApiJoinstrDPoolRelay({required DPool that}) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
           final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPool(
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDPool(
             that,
             serializer,
           );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 27)!;
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 22,
+            port: port_,
+          );
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_opt_String,
           decodeErrorData: null,
         ),
-        constMeta: kCrateApiJoinstrPoolRelayConstMeta,
+        constMeta: kCrateApiJoinstrDPoolRelayConstMeta,
         argValues: [that],
         apiImpl: this,
       ),
     );
   }
 
-  TaskConstMeta get kCrateApiJoinstrPoolRelayConstMeta =>
-      const TaskConstMeta(debugName: "Pool_relay", argNames: ["that"]);
-
-  @override
-  Address? crateApiJoinstrAddressFromString({required String value}) {
-    return handler.executeSync(
-      SyncTask(
-        callFfi: () {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_String(value, serializer);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 28)!;
-        },
-        codec: SseCodec(
-          decodeSuccessData: sse_decode_opt_box_autoadd_address,
-          decodeErrorData: null,
-        ),
-        constMeta: kCrateApiJoinstrAddressFromStringConstMeta,
-        argValues: [value],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta get kCrateApiJoinstrAddressFromStringConstMeta =>
-      const TaskConstMeta(
-        debugName: "address_from_string",
-        argNames: ["value"],
-      );
+  TaskConstMeta get kCrateApiJoinstrDPoolRelayConstMeta =>
+      const TaskConstMeta(debugName: "DPool_relay", argNames: ["that"]);
 
   @override
   Future<bool> crateApiJoinstrCoinjoinResultIsError({
@@ -1149,7 +968,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 29,
+            funcId: 23,
             port: port_,
           );
         },
@@ -1182,7 +1001,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 30,
+            funcId: 24,
             port: port_,
           );
         },
@@ -1212,7 +1031,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 31,
+            funcId: 25,
             port: port_,
           );
         },
@@ -1232,19 +1051,19 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @override
   CoinjoinResult crateApiJoinstrInitiateCoinjoin({
-    required PoolConfig config,
-    required PeerConfig peer,
+    required DPoolConfig config,
+    required DPeerConfig peer,
   }) {
     return handler.executeSync(
       SyncTask(
         callFfi: () {
           final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_box_autoadd_pool_config(config, serializer);
-          sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPeerConfig(
+          sse_encode_box_autoadd_d_pool_config(config, serializer);
+          sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDPeerConfig(
             peer,
             serializer,
           );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 32)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 26)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_coinjoin_result,
@@ -1265,22 +1084,22 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @override
   CoinjoinResult crateApiJoinstrJoinCoinjoin({
-    required Pool pool,
-    required PeerConfig peer,
+    required DPool pool,
+    required DPeerConfig peer,
   }) {
     return handler.executeSync(
       SyncTask(
         callFfi: () {
           final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPool(
+          sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDPool(
             pool,
             serializer,
           );
-          sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPeerConfig(
+          sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDPeerConfig(
             peer,
             serializer,
           );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 33)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 27)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_coinjoin_result,
@@ -1305,7 +1124,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     required String electrumUrl,
     required int electrumPort,
     required (int, int) range,
-    required Network network,
+    required DNetwork network,
   }) {
     return handler.executeSync(
       SyncTask(
@@ -1315,8 +1134,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           sse_encode_String(electrumUrl, serializer);
           sse_encode_u_16(electrumPort, serializer);
           sse_encode_box_autoadd_record_u_32_u_32(range, serializer);
-          sse_encode_network(network, serializer);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 34)!;
+          sse_encode_d_network(network, serializer);
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 28)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_list_coins_result,
@@ -1347,7 +1166,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           sse_encode_u_64(back, serializer);
           sse_encode_u_64(timeout, serializer);
           sse_encode_String(relay, serializer);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 35)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 29)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_list_pools_result,
@@ -1365,254 +1184,166 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     argNames: ["back", "timeout", "relay"],
   );
 
-  RustArcIncrementStrongCountFnType get rust_arc_increment_strong_count_Coin =>
-      wire.rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCoin;
-
-  RustArcDecrementStrongCountFnType get rust_arc_decrement_strong_count_Coin =>
-      wire.rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCoin;
-
   RustArcIncrementStrongCountFnType
-  get rust_arc_increment_strong_count_Mnemonic =>
-      wire.rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMnemonic;
+  get rust_arc_increment_strong_count_DAddress =>
+      wire.rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDAddress;
 
   RustArcDecrementStrongCountFnType
-  get rust_arc_decrement_strong_count_Mnemonic =>
-      wire.rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMnemonic;
+  get rust_arc_decrement_strong_count_DAddress =>
+      wire.rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDAddress;
+
+  RustArcIncrementStrongCountFnType get rust_arc_increment_strong_count_DCoin =>
+      wire.rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDCoin;
+
+  RustArcDecrementStrongCountFnType get rust_arc_decrement_strong_count_DCoin =>
+      wire.rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDCoin;
 
   RustArcIncrementStrongCountFnType
-  get rust_arc_increment_strong_count_PeerConfig =>
-      wire.rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPeerConfig;
+  get rust_arc_increment_strong_count_DMnemonic =>
+      wire.rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDMnemonic;
 
   RustArcDecrementStrongCountFnType
-  get rust_arc_decrement_strong_count_PeerConfig =>
-      wire.rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPeerConfig;
-
-  RustArcIncrementStrongCountFnType get rust_arc_increment_strong_count_Pool =>
-      wire.rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPool;
-
-  RustArcDecrementStrongCountFnType get rust_arc_decrement_strong_count_Pool =>
-      wire.rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPool;
+  get rust_arc_decrement_strong_count_DMnemonic =>
+      wire.rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDMnemonic;
 
   RustArcIncrementStrongCountFnType
-  get rust_arc_increment_strong_count_RustCoin =>
-      wire.rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRustCoin;
+  get rust_arc_increment_strong_count_DPeerConfig =>
+      wire.rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDPeerConfig;
 
   RustArcDecrementStrongCountFnType
-  get rust_arc_decrement_strong_count_RustCoin =>
-      wire.rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRustCoin;
+  get rust_arc_decrement_strong_count_DPeerConfig =>
+      wire.rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDPeerConfig;
 
-  RustArcIncrementStrongCountFnType
-  get rust_arc_increment_strong_count_RustMnemonic =>
-      wire.rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRustMnemonic;
+  RustArcIncrementStrongCountFnType get rust_arc_increment_strong_count_DPool =>
+      wire.rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDPool;
 
-  RustArcDecrementStrongCountFnType
-  get rust_arc_decrement_strong_count_RustMnemonic =>
-      wire.rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRustMnemonic;
-
-  RustArcIncrementStrongCountFnType
-  get rust_arc_increment_strong_count_RustPool =>
-      wire.rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRustPool;
-
-  RustArcDecrementStrongCountFnType
-  get rust_arc_decrement_strong_count_RustPool =>
-      wire.rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRustPool;
+  RustArcDecrementStrongCountFnType get rust_arc_decrement_strong_count_DPool =>
+      wire.rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDPool;
 
   @protected
-  Coin
-  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCoin(
+  DAddress
+  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDAddress(
     dynamic raw,
   ) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
-    return CoinImpl.frbInternalDcoDecode(raw as List<dynamic>);
+    return DAddressImpl.frbInternalDcoDecode(raw as List<dynamic>);
   }
 
   @protected
-  Mnemonic
-  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMnemonic(
+  DCoin
+  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDCoin(
     dynamic raw,
   ) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
-    return MnemonicImpl.frbInternalDcoDecode(raw as List<dynamic>);
+    return DCoinImpl.frbInternalDcoDecode(raw as List<dynamic>);
   }
 
   @protected
-  PeerConfig
-  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPeerConfig(
+  DMnemonic
+  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDMnemonic(
     dynamic raw,
   ) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
-    return PeerConfigImpl.frbInternalDcoDecode(raw as List<dynamic>);
+    return DMnemonicImpl.frbInternalDcoDecode(raw as List<dynamic>);
   }
 
   @protected
-  Pool
-  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPool(
+  DPeerConfig
+  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDPeerConfig(
     dynamic raw,
   ) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
-    return PoolImpl.frbInternalDcoDecode(raw as List<dynamic>);
+    return DPeerConfigImpl.frbInternalDcoDecode(raw as List<dynamic>);
   }
 
   @protected
-  RustCoin
-  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRustCoin(
+  DPool
+  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDPool(
     dynamic raw,
   ) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
-    return RustCoinImpl.frbInternalDcoDecode(raw as List<dynamic>);
+    return DPoolImpl.frbInternalDcoDecode(raw as List<dynamic>);
   }
 
   @protected
-  RustMnemonic
-  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRustMnemonic(
+  DPeerConfig
+  dco_decode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDPeerConfig(
     dynamic raw,
   ) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
-    return RustMnemonicImpl.frbInternalDcoDecode(raw as List<dynamic>);
+    return DPeerConfigImpl.frbInternalDcoDecode(raw as List<dynamic>);
   }
 
   @protected
-  RustPool
-  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRustPool(
+  DCoin
+  dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDCoin(
     dynamic raw,
   ) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
-    return RustPoolImpl.frbInternalDcoDecode(raw as List<dynamic>);
+    return DCoinImpl.frbInternalDcoDecode(raw as List<dynamic>);
   }
 
   @protected
-  Coin
-  dco_decode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCoin(
+  DPeerConfig
+  dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDPeerConfig(
     dynamic raw,
   ) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
-    return CoinImpl.frbInternalDcoDecode(raw as List<dynamic>);
+    return DPeerConfigImpl.frbInternalDcoDecode(raw as List<dynamic>);
   }
 
   @protected
-  Mnemonic
-  dco_decode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMnemonic(
+  DPool
+  dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDPool(
     dynamic raw,
   ) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
-    return MnemonicImpl.frbInternalDcoDecode(raw as List<dynamic>);
+    return DPoolImpl.frbInternalDcoDecode(raw as List<dynamic>);
   }
 
   @protected
-  PeerConfig
-  dco_decode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPeerConfig(
+  DAddress
+  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDAddress(
     dynamic raw,
   ) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
-    return PeerConfigImpl.frbInternalDcoDecode(raw as List<dynamic>);
+    return DAddressImpl.frbInternalDcoDecode(raw as List<dynamic>);
   }
 
   @protected
-  Pool
-  dco_decode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPool(
+  DCoin
+  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDCoin(
     dynamic raw,
   ) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
-    return PoolImpl.frbInternalDcoDecode(raw as List<dynamic>);
+    return DCoinImpl.frbInternalDcoDecode(raw as List<dynamic>);
   }
 
   @protected
-  Coin
-  dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCoin(
+  DMnemonic
+  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDMnemonic(
     dynamic raw,
   ) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
-    return CoinImpl.frbInternalDcoDecode(raw as List<dynamic>);
+    return DMnemonicImpl.frbInternalDcoDecode(raw as List<dynamic>);
   }
 
   @protected
-  Mnemonic
-  dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMnemonic(
+  DPeerConfig
+  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDPeerConfig(
     dynamic raw,
   ) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
-    return MnemonicImpl.frbInternalDcoDecode(raw as List<dynamic>);
+    return DPeerConfigImpl.frbInternalDcoDecode(raw as List<dynamic>);
   }
 
   @protected
-  PeerConfig
-  dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPeerConfig(
+  DPool
+  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDPool(
     dynamic raw,
   ) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
-    return PeerConfigImpl.frbInternalDcoDecode(raw as List<dynamic>);
-  }
-
-  @protected
-  Pool
-  dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPool(
-    dynamic raw,
-  ) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return PoolImpl.frbInternalDcoDecode(raw as List<dynamic>);
-  }
-
-  @protected
-  Coin
-  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCoin(
-    dynamic raw,
-  ) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return CoinImpl.frbInternalDcoDecode(raw as List<dynamic>);
-  }
-
-  @protected
-  Mnemonic
-  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMnemonic(
-    dynamic raw,
-  ) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return MnemonicImpl.frbInternalDcoDecode(raw as List<dynamic>);
-  }
-
-  @protected
-  PeerConfig
-  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPeerConfig(
-    dynamic raw,
-  ) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return PeerConfigImpl.frbInternalDcoDecode(raw as List<dynamic>);
-  }
-
-  @protected
-  Pool
-  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPool(
-    dynamic raw,
-  ) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return PoolImpl.frbInternalDcoDecode(raw as List<dynamic>);
-  }
-
-  @protected
-  RustCoin
-  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRustCoin(
-    dynamic raw,
-  ) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return RustCoinImpl.frbInternalDcoDecode(raw as List<dynamic>);
-  }
-
-  @protected
-  RustMnemonic
-  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRustMnemonic(
-    dynamic raw,
-  ) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return RustMnemonicImpl.frbInternalDcoDecode(raw as List<dynamic>);
-  }
-
-  @protected
-  RustPool
-  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRustPool(
-    dynamic raw,
-  ) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return RustPoolImpl.frbInternalDcoDecode(raw as List<dynamic>);
+    return DPoolImpl.frbInternalDcoDecode(raw as List<dynamic>);
   }
 
   @protected
@@ -1622,35 +1353,31 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  Address dco_decode_address(dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    final arr = raw as List<dynamic>;
-    if (arr.length != 1)
-      throw Exception('unexpected arr length: expect 1 but see ${arr.length}');
-    return Address(inner: dco_decode_address(arr[0]));
-  }
-
-  @protected
   bool dco_decode_bool(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw as bool;
   }
 
   @protected
-  Mnemonic
-  dco_decode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMnemonic(
+  DAddress
+  dco_decode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDAddress(
     dynamic raw,
   ) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
-    return dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMnemonic(
+    return dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDAddress(
       raw,
     );
   }
 
   @protected
-  Address dco_decode_box_autoadd_address(dynamic raw) {
+  DMnemonic
+  dco_decode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDMnemonic(
+    dynamic raw,
+  ) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
-    return dco_decode_address(raw);
+    return dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDMnemonic(
+      raw,
+    );
   }
 
   @protected
@@ -1660,15 +1387,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  double dco_decode_box_autoadd_f_64(dynamic raw) {
+  DPoolConfig dco_decode_box_autoadd_d_pool_config(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
-    return raw as double;
+    return dco_decode_d_pool_config(raw);
   }
 
   @protected
-  PoolConfig dco_decode_box_autoadd_pool_config(dynamic raw) {
+  double dco_decode_box_autoadd_f_64(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
-    return dco_decode_pool_config(raw);
+    return raw as double;
   }
 
   @protected
@@ -1708,6 +1435,27 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  DNetwork dco_decode_d_network(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return DNetwork.values[raw as int];
+  }
+
+  @protected
+  DPoolConfig dco_decode_d_pool_config(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 5)
+      throw Exception('unexpected arr length: expect 5 but see ${arr.length}');
+    return DPoolConfig(
+      denomination: dco_decode_f_64(arr[0]),
+      fee: dco_decode_u_32(arr[1]),
+      maxDuration: dco_decode_u_64(arr[2]),
+      peers: dco_decode_usize(arr[3]),
+      network: dco_decode_d_network(arr[4]),
+    );
+  }
+
+  @protected
   double dco_decode_f_64(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw as double;
@@ -1720,27 +1468,27 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  List<Coin>
-  dco_decode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCoin(
+  List<DCoin>
+  dco_decode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDCoin(
     dynamic raw,
   ) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return (raw as List<dynamic>)
         .map(
-          dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCoin,
+          dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDCoin,
         )
         .toList();
   }
 
   @protected
-  List<Pool>
-  dco_decode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPool(
+  List<DPool>
+  dco_decode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDPool(
     dynamic raw,
   ) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return (raw as List<dynamic>)
         .map(
-          dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPool,
+          dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDPool,
         )
         .toList();
   }
@@ -1753,7 +1501,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       throw Exception('unexpected arr length: expect 2 but see ${arr.length}');
     return ListCoinsResult(
       coins:
-          dco_decode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCoin(
+          dco_decode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDCoin(
             arr[0],
           ),
       error: dco_decode_String(arr[1]),
@@ -1768,7 +1516,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       throw Exception('unexpected arr length: expect 2 but see ${arr.length}');
     return ListPoolsResult(
       pools:
-          dco_decode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPool(
+          dco_decode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDPool(
             arr[0],
           ),
       error: dco_decode_String(arr[1]),
@@ -1782,34 +1530,35 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  Network dco_decode_network(dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return Network.values[raw as int];
-  }
-
-  @protected
   String? dco_decode_opt_String(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw == null ? null : dco_decode_String(raw);
   }
 
   @protected
-  Mnemonic?
-  dco_decode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMnemonic(
+  DAddress?
+  dco_decode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDAddress(
     dynamic raw,
   ) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw == null
         ? null
-        : dco_decode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMnemonic(
+        : dco_decode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDAddress(
           raw,
         );
   }
 
   @protected
-  Address? dco_decode_opt_box_autoadd_address(dynamic raw) {
+  DMnemonic?
+  dco_decode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDMnemonic(
+    dynamic raw,
+  ) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
-    return raw == null ? null : dco_decode_box_autoadd_address(raw);
+    return raw == null
+        ? null
+        : dco_decode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDMnemonic(
+          raw,
+        );
   }
 
   @protected
@@ -1834,21 +1583,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   BigInt? dco_decode_opt_box_autoadd_usize(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw == null ? null : dco_decode_box_autoadd_usize(raw);
-  }
-
-  @protected
-  PoolConfig dco_decode_pool_config(dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    final arr = raw as List<dynamic>;
-    if (arr.length != 5)
-      throw Exception('unexpected arr length: expect 5 but see ${arr.length}');
-    return PoolConfig(
-      denomination: dco_decode_f_64(arr[0]),
-      fee: dco_decode_u_32(arr[1]),
-      maxDuration: dco_decode_u_64(arr[2]),
-      peers: dco_decode_usize(arr[3]),
-      network: dco_decode_network(arr[4]),
-    );
   }
 
   @protected
@@ -1898,264 +1632,168 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  Coin
-  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCoin(
+  DAddress
+  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDAddress(
     SseDeserializer deserializer,
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    return CoinImpl.frbInternalSseDecode(
+    return DAddressImpl.frbInternalSseDecode(
       sse_decode_usize(deserializer),
       sse_decode_i_32(deserializer),
     );
   }
 
   @protected
-  Mnemonic
-  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMnemonic(
+  DCoin
+  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDCoin(
     SseDeserializer deserializer,
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    return MnemonicImpl.frbInternalSseDecode(
+    return DCoinImpl.frbInternalSseDecode(
       sse_decode_usize(deserializer),
       sse_decode_i_32(deserializer),
     );
   }
 
   @protected
-  PeerConfig
-  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPeerConfig(
+  DMnemonic
+  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDMnemonic(
     SseDeserializer deserializer,
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    return PeerConfigImpl.frbInternalSseDecode(
+    return DMnemonicImpl.frbInternalSseDecode(
       sse_decode_usize(deserializer),
       sse_decode_i_32(deserializer),
     );
   }
 
   @protected
-  Pool
-  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPool(
+  DPeerConfig
+  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDPeerConfig(
     SseDeserializer deserializer,
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    return PoolImpl.frbInternalSseDecode(
+    return DPeerConfigImpl.frbInternalSseDecode(
       sse_decode_usize(deserializer),
       sse_decode_i_32(deserializer),
     );
   }
 
   @protected
-  RustCoin
-  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRustCoin(
+  DPool
+  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDPool(
     SseDeserializer deserializer,
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    return RustCoinImpl.frbInternalSseDecode(
+    return DPoolImpl.frbInternalSseDecode(
       sse_decode_usize(deserializer),
       sse_decode_i_32(deserializer),
     );
   }
 
   @protected
-  RustMnemonic
-  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRustMnemonic(
+  DPeerConfig
+  sse_decode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDPeerConfig(
     SseDeserializer deserializer,
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    return RustMnemonicImpl.frbInternalSseDecode(
+    return DPeerConfigImpl.frbInternalSseDecode(
       sse_decode_usize(deserializer),
       sse_decode_i_32(deserializer),
     );
   }
 
   @protected
-  RustPool
-  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRustPool(
+  DCoin
+  sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDCoin(
     SseDeserializer deserializer,
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    return RustPoolImpl.frbInternalSseDecode(
+    return DCoinImpl.frbInternalSseDecode(
       sse_decode_usize(deserializer),
       sse_decode_i_32(deserializer),
     );
   }
 
   @protected
-  Coin
-  sse_decode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCoin(
+  DPeerConfig
+  sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDPeerConfig(
     SseDeserializer deserializer,
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    return CoinImpl.frbInternalSseDecode(
+    return DPeerConfigImpl.frbInternalSseDecode(
       sse_decode_usize(deserializer),
       sse_decode_i_32(deserializer),
     );
   }
 
   @protected
-  Mnemonic
-  sse_decode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMnemonic(
+  DPool
+  sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDPool(
     SseDeserializer deserializer,
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    return MnemonicImpl.frbInternalSseDecode(
+    return DPoolImpl.frbInternalSseDecode(
       sse_decode_usize(deserializer),
       sse_decode_i_32(deserializer),
     );
   }
 
   @protected
-  PeerConfig
-  sse_decode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPeerConfig(
+  DAddress
+  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDAddress(
     SseDeserializer deserializer,
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    return PeerConfigImpl.frbInternalSseDecode(
+    return DAddressImpl.frbInternalSseDecode(
       sse_decode_usize(deserializer),
       sse_decode_i_32(deserializer),
     );
   }
 
   @protected
-  Pool
-  sse_decode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPool(
+  DCoin
+  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDCoin(
     SseDeserializer deserializer,
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    return PoolImpl.frbInternalSseDecode(
+    return DCoinImpl.frbInternalSseDecode(
       sse_decode_usize(deserializer),
       sse_decode_i_32(deserializer),
     );
   }
 
   @protected
-  Coin
-  sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCoin(
+  DMnemonic
+  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDMnemonic(
     SseDeserializer deserializer,
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    return CoinImpl.frbInternalSseDecode(
+    return DMnemonicImpl.frbInternalSseDecode(
       sse_decode_usize(deserializer),
       sse_decode_i_32(deserializer),
     );
   }
 
   @protected
-  Mnemonic
-  sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMnemonic(
+  DPeerConfig
+  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDPeerConfig(
     SseDeserializer deserializer,
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    return MnemonicImpl.frbInternalSseDecode(
+    return DPeerConfigImpl.frbInternalSseDecode(
       sse_decode_usize(deserializer),
       sse_decode_i_32(deserializer),
     );
   }
 
   @protected
-  PeerConfig
-  sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPeerConfig(
+  DPool
+  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDPool(
     SseDeserializer deserializer,
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    return PeerConfigImpl.frbInternalSseDecode(
-      sse_decode_usize(deserializer),
-      sse_decode_i_32(deserializer),
-    );
-  }
-
-  @protected
-  Pool
-  sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPool(
-    SseDeserializer deserializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    return PoolImpl.frbInternalSseDecode(
-      sse_decode_usize(deserializer),
-      sse_decode_i_32(deserializer),
-    );
-  }
-
-  @protected
-  Coin
-  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCoin(
-    SseDeserializer deserializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    return CoinImpl.frbInternalSseDecode(
-      sse_decode_usize(deserializer),
-      sse_decode_i_32(deserializer),
-    );
-  }
-
-  @protected
-  Mnemonic
-  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMnemonic(
-    SseDeserializer deserializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    return MnemonicImpl.frbInternalSseDecode(
-      sse_decode_usize(deserializer),
-      sse_decode_i_32(deserializer),
-    );
-  }
-
-  @protected
-  PeerConfig
-  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPeerConfig(
-    SseDeserializer deserializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    return PeerConfigImpl.frbInternalSseDecode(
-      sse_decode_usize(deserializer),
-      sse_decode_i_32(deserializer),
-    );
-  }
-
-  @protected
-  Pool
-  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPool(
-    SseDeserializer deserializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    return PoolImpl.frbInternalSseDecode(
-      sse_decode_usize(deserializer),
-      sse_decode_i_32(deserializer),
-    );
-  }
-
-  @protected
-  RustCoin
-  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRustCoin(
-    SseDeserializer deserializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    return RustCoinImpl.frbInternalSseDecode(
-      sse_decode_usize(deserializer),
-      sse_decode_i_32(deserializer),
-    );
-  }
-
-  @protected
-  RustMnemonic
-  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRustMnemonic(
-    SseDeserializer deserializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    return RustMnemonicImpl.frbInternalSseDecode(
-      sse_decode_usize(deserializer),
-      sse_decode_i_32(deserializer),
-    );
-  }
-
-  @protected
-  RustPool
-  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRustPool(
-    SseDeserializer deserializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    return RustPoolImpl.frbInternalSseDecode(
+    return DPoolImpl.frbInternalSseDecode(
       sse_decode_usize(deserializer),
       sse_decode_i_32(deserializer),
     );
@@ -2169,33 +1807,31 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  Address sse_decode_address(SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    var var_inner = sse_decode_address(deserializer);
-    return Address(inner: var_inner);
-  }
-
-  @protected
   bool sse_decode_bool(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return deserializer.buffer.getUint8() != 0;
   }
 
   @protected
-  Mnemonic
-  sse_decode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMnemonic(
+  DAddress
+  sse_decode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDAddress(
     SseDeserializer deserializer,
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    return (sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMnemonic(
+    return (sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDAddress(
       deserializer,
     ));
   }
 
   @protected
-  Address sse_decode_box_autoadd_address(SseDeserializer deserializer) {
+  DMnemonic
+  sse_decode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDMnemonic(
+    SseDeserializer deserializer,
+  ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    return (sse_decode_address(deserializer));
+    return (sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDMnemonic(
+      deserializer,
+    ));
   }
 
   @protected
@@ -2207,15 +1843,17 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  double sse_decode_box_autoadd_f_64(SseDeserializer deserializer) {
+  DPoolConfig sse_decode_box_autoadd_d_pool_config(
+    SseDeserializer deserializer,
+  ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    return (sse_decode_f_64(deserializer));
+    return (sse_decode_d_pool_config(deserializer));
   }
 
   @protected
-  PoolConfig sse_decode_box_autoadd_pool_config(SseDeserializer deserializer) {
+  double sse_decode_box_autoadd_f_64(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    return (sse_decode_pool_config(deserializer));
+    return (sse_decode_f_64(deserializer));
   }
 
   @protected
@@ -2253,6 +1891,30 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  DNetwork sse_decode_d_network(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var inner = sse_decode_i_32(deserializer);
+    return DNetwork.values[inner];
+  }
+
+  @protected
+  DPoolConfig sse_decode_d_pool_config(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_denomination = sse_decode_f_64(deserializer);
+    var var_fee = sse_decode_u_32(deserializer);
+    var var_maxDuration = sse_decode_u_64(deserializer);
+    var var_peers = sse_decode_usize(deserializer);
+    var var_network = sse_decode_d_network(deserializer);
+    return DPoolConfig(
+      denomination: var_denomination,
+      fee: var_fee,
+      maxDuration: var_maxDuration,
+      peers: var_peers,
+      network: var_network,
+    );
+  }
+
+  @protected
   double sse_decode_f_64(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return deserializer.buffer.getFloat64();
@@ -2265,17 +1927,17 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  List<Coin>
-  sse_decode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCoin(
+  List<DCoin>
+  sse_decode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDCoin(
     SseDeserializer deserializer,
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
 
     var len_ = sse_decode_i_32(deserializer);
-    var ans_ = <Coin>[];
+    var ans_ = <DCoin>[];
     for (var idx_ = 0; idx_ < len_; ++idx_) {
       ans_.add(
-        sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCoin(
+        sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDCoin(
           deserializer,
         ),
       );
@@ -2284,17 +1946,17 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  List<Pool>
-  sse_decode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPool(
+  List<DPool>
+  sse_decode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDPool(
     SseDeserializer deserializer,
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
 
     var len_ = sse_decode_i_32(deserializer);
-    var ans_ = <Pool>[];
+    var ans_ = <DPool>[];
     for (var idx_ = 0; idx_ < len_; ++idx_) {
       ans_.add(
-        sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPool(
+        sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDPool(
           deserializer,
         ),
       );
@@ -2306,7 +1968,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   ListCoinsResult sse_decode_list_coins_result(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var var_coins =
-        sse_decode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCoin(
+        sse_decode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDCoin(
           deserializer,
         );
     var var_error = sse_decode_String(deserializer);
@@ -2317,7 +1979,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   ListPoolsResult sse_decode_list_pools_result(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var var_pools =
-        sse_decode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPool(
+        sse_decode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDPool(
           deserializer,
         );
     var var_error = sse_decode_String(deserializer);
@@ -2332,13 +1994,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  Network sse_decode_network(SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    var inner = sse_decode_i_32(deserializer);
-    return Network.values[inner];
-  }
-
-  @protected
   String? sse_decode_opt_String(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
 
@@ -2350,14 +2005,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  Mnemonic?
-  sse_decode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMnemonic(
+  DAddress?
+  sse_decode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDAddress(
     SseDeserializer deserializer,
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
 
     if (sse_decode_bool(deserializer)) {
-      return (sse_decode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMnemonic(
+      return (sse_decode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDAddress(
         deserializer,
       ));
     } else {
@@ -2366,11 +2021,16 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  Address? sse_decode_opt_box_autoadd_address(SseDeserializer deserializer) {
+  DMnemonic?
+  sse_decode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDMnemonic(
+    SseDeserializer deserializer,
+  ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
 
     if (sse_decode_bool(deserializer)) {
-      return (sse_decode_box_autoadd_address(deserializer));
+      return (sse_decode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDMnemonic(
+        deserializer,
+      ));
     } else {
       return null;
     }
@@ -2421,23 +2081,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  PoolConfig sse_decode_pool_config(SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    var var_denomination = sse_decode_f_64(deserializer);
-    var var_fee = sse_decode_u_32(deserializer);
-    var var_maxDuration = sse_decode_u_64(deserializer);
-    var var_peers = sse_decode_usize(deserializer);
-    var var_network = sse_decode_network(deserializer);
-    return PoolConfig(
-      denomination: var_denomination,
-      fee: var_fee,
-      maxDuration: var_maxDuration,
-      peers: var_peers,
-      network: var_network,
-    );
-  }
-
-  @protected
   (int, int) sse_decode_record_u_32_u_32(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var var_field0 = sse_decode_u_32(deserializer);
@@ -2482,286 +2125,182 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   void
-  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCoin(
-    Coin self,
+  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDAddress(
+    DAddress self,
     SseSerializer serializer,
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_usize(
-      (self as CoinImpl).frbInternalSseEncode(move: true),
+      (self as DAddressImpl).frbInternalSseEncode(move: true),
       serializer,
     );
   }
 
   @protected
   void
-  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMnemonic(
-    Mnemonic self,
+  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDCoin(
+    DCoin self,
     SseSerializer serializer,
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_usize(
-      (self as MnemonicImpl).frbInternalSseEncode(move: true),
+      (self as DCoinImpl).frbInternalSseEncode(move: true),
       serializer,
     );
   }
 
   @protected
   void
-  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPeerConfig(
-    PeerConfig self,
+  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDMnemonic(
+    DMnemonic self,
     SseSerializer serializer,
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_usize(
-      (self as PeerConfigImpl).frbInternalSseEncode(move: true),
+      (self as DMnemonicImpl).frbInternalSseEncode(move: true),
       serializer,
     );
   }
 
   @protected
   void
-  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPool(
-    Pool self,
+  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDPeerConfig(
+    DPeerConfig self,
     SseSerializer serializer,
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_usize(
-      (self as PoolImpl).frbInternalSseEncode(move: true),
+      (self as DPeerConfigImpl).frbInternalSseEncode(move: true),
       serializer,
     );
   }
 
   @protected
   void
-  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRustCoin(
-    RustCoin self,
+  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDPool(
+    DPool self,
     SseSerializer serializer,
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_usize(
-      (self as RustCoinImpl).frbInternalSseEncode(move: true),
+      (self as DPoolImpl).frbInternalSseEncode(move: true),
       serializer,
     );
   }
 
   @protected
   void
-  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRustMnemonic(
-    RustMnemonic self,
+  sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDPeerConfig(
+    DPeerConfig self,
     SseSerializer serializer,
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_usize(
-      (self as RustMnemonicImpl).frbInternalSseEncode(move: true),
+      (self as DPeerConfigImpl).frbInternalSseEncode(move: false),
       serializer,
     );
   }
 
   @protected
   void
-  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRustPool(
-    RustPool self,
+  sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDCoin(
+    DCoin self,
     SseSerializer serializer,
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_usize(
-      (self as RustPoolImpl).frbInternalSseEncode(move: true),
+      (self as DCoinImpl).frbInternalSseEncode(move: false),
       serializer,
     );
   }
 
   @protected
   void
-  sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCoin(
-    Coin self,
+  sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDPeerConfig(
+    DPeerConfig self,
     SseSerializer serializer,
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_usize(
-      (self as CoinImpl).frbInternalSseEncode(move: false),
+      (self as DPeerConfigImpl).frbInternalSseEncode(move: false),
       serializer,
     );
   }
 
   @protected
   void
-  sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMnemonic(
-    Mnemonic self,
+  sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDPool(
+    DPool self,
     SseSerializer serializer,
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_usize(
-      (self as MnemonicImpl).frbInternalSseEncode(move: false),
+      (self as DPoolImpl).frbInternalSseEncode(move: false),
       serializer,
     );
   }
 
   @protected
   void
-  sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPeerConfig(
-    PeerConfig self,
+  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDAddress(
+    DAddress self,
     SseSerializer serializer,
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_usize(
-      (self as PeerConfigImpl).frbInternalSseEncode(move: false),
+      (self as DAddressImpl).frbInternalSseEncode(move: null),
       serializer,
     );
   }
 
   @protected
   void
-  sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPool(
-    Pool self,
+  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDCoin(
+    DCoin self,
     SseSerializer serializer,
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_usize(
-      (self as PoolImpl).frbInternalSseEncode(move: false),
+      (self as DCoinImpl).frbInternalSseEncode(move: null),
       serializer,
     );
   }
 
   @protected
   void
-  sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCoin(
-    Coin self,
+  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDMnemonic(
+    DMnemonic self,
     SseSerializer serializer,
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_usize(
-      (self as CoinImpl).frbInternalSseEncode(move: false),
+      (self as DMnemonicImpl).frbInternalSseEncode(move: null),
       serializer,
     );
   }
 
   @protected
   void
-  sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMnemonic(
-    Mnemonic self,
+  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDPeerConfig(
+    DPeerConfig self,
     SseSerializer serializer,
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_usize(
-      (self as MnemonicImpl).frbInternalSseEncode(move: false),
+      (self as DPeerConfigImpl).frbInternalSseEncode(move: null),
       serializer,
     );
   }
 
   @protected
   void
-  sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPeerConfig(
-    PeerConfig self,
+  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDPool(
+    DPool self,
     SseSerializer serializer,
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_usize(
-      (self as PeerConfigImpl).frbInternalSseEncode(move: false),
-      serializer,
-    );
-  }
-
-  @protected
-  void
-  sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPool(
-    Pool self,
-    SseSerializer serializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_usize(
-      (self as PoolImpl).frbInternalSseEncode(move: false),
-      serializer,
-    );
-  }
-
-  @protected
-  void
-  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCoin(
-    Coin self,
-    SseSerializer serializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_usize(
-      (self as CoinImpl).frbInternalSseEncode(move: null),
-      serializer,
-    );
-  }
-
-  @protected
-  void
-  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMnemonic(
-    Mnemonic self,
-    SseSerializer serializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_usize(
-      (self as MnemonicImpl).frbInternalSseEncode(move: null),
-      serializer,
-    );
-  }
-
-  @protected
-  void
-  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPeerConfig(
-    PeerConfig self,
-    SseSerializer serializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_usize(
-      (self as PeerConfigImpl).frbInternalSseEncode(move: null),
-      serializer,
-    );
-  }
-
-  @protected
-  void
-  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPool(
-    Pool self,
-    SseSerializer serializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_usize(
-      (self as PoolImpl).frbInternalSseEncode(move: null),
-      serializer,
-    );
-  }
-
-  @protected
-  void
-  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRustCoin(
-    RustCoin self,
-    SseSerializer serializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_usize(
-      (self as RustCoinImpl).frbInternalSseEncode(move: null),
-      serializer,
-    );
-  }
-
-  @protected
-  void
-  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRustMnemonic(
-    RustMnemonic self,
-    SseSerializer serializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_usize(
-      (self as RustMnemonicImpl).frbInternalSseEncode(move: null),
-      serializer,
-    );
-  }
-
-  @protected
-  void
-  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRustPool(
-    RustPool self,
-    SseSerializer serializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_usize(
-      (self as RustPoolImpl).frbInternalSseEncode(move: null),
+      (self as DPoolImpl).frbInternalSseEncode(move: null),
       serializer,
     );
   }
@@ -2773,12 +2312,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  void sse_encode_address(Address self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_address(self.inner, serializer);
-  }
-
-  @protected
   void sse_encode_bool(bool self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     serializer.buffer.putUint8(self ? 1 : 0);
@@ -2786,21 +2319,28 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   void
-  sse_encode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMnemonic(
-    Mnemonic self,
+  sse_encode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDAddress(
+    DAddress self,
     SseSerializer serializer,
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMnemonic(
+    sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDAddress(
       self,
       serializer,
     );
   }
 
   @protected
-  void sse_encode_box_autoadd_address(Address self, SseSerializer serializer) {
+  void
+  sse_encode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDMnemonic(
+    DMnemonic self,
+    SseSerializer serializer,
+  ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_address(self, serializer);
+    sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDMnemonic(
+      self,
+      serializer,
+    );
   }
 
   @protected
@@ -2813,18 +2353,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  void sse_encode_box_autoadd_f_64(double self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_f_64(self, serializer);
-  }
-
-  @protected
-  void sse_encode_box_autoadd_pool_config(
-    PoolConfig self,
+  void sse_encode_box_autoadd_d_pool_config(
+    DPoolConfig self,
     SseSerializer serializer,
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_pool_config(self, serializer);
+    sse_encode_d_pool_config(self, serializer);
+  }
+
+  @protected
+  void sse_encode_box_autoadd_f_64(double self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_f_64(self, serializer);
   }
 
   @protected
@@ -2865,6 +2405,22 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_d_network(DNetwork self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.index, serializer);
+  }
+
+  @protected
+  void sse_encode_d_pool_config(DPoolConfig self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_f_64(self.denomination, serializer);
+    sse_encode_u_32(self.fee, serializer);
+    sse_encode_u_64(self.maxDuration, serializer);
+    sse_encode_usize(self.peers, serializer);
+    sse_encode_d_network(self.network, serializer);
+  }
+
+  @protected
   void sse_encode_f_64(double self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     serializer.buffer.putFloat64(self);
@@ -2878,14 +2434,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   void
-  sse_encode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCoin(
-    List<Coin> self,
+  sse_encode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDCoin(
+    List<DCoin> self,
     SseSerializer serializer,
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_i_32(self.length, serializer);
     for (final item in self) {
-      sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCoin(
+      sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDCoin(
         item,
         serializer,
       );
@@ -2894,14 +2450,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   void
-  sse_encode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPool(
-    List<Pool> self,
+  sse_encode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDPool(
+    List<DPool> self,
     SseSerializer serializer,
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_i_32(self.length, serializer);
     for (final item in self) {
-      sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPool(
+      sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDPool(
         item,
         serializer,
       );
@@ -2914,7 +2470,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     SseSerializer serializer,
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCoin(
+    sse_encode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDCoin(
       self.coins,
       serializer,
     );
@@ -2927,7 +2483,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     SseSerializer serializer,
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPool(
+    sse_encode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDPool(
       self.pools,
       serializer,
     );
@@ -2945,12 +2501,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  void sse_encode_network(Network self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_i_32(self.index, serializer);
-  }
-
-  @protected
   void sse_encode_opt_String(String? self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
 
@@ -2962,15 +2512,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   void
-  sse_encode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMnemonic(
-    Mnemonic? self,
+  sse_encode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDAddress(
+    DAddress? self,
     SseSerializer serializer,
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
 
     sse_encode_bool(self != null, serializer);
     if (self != null) {
-      sse_encode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMnemonic(
+      sse_encode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDAddress(
         self,
         serializer,
       );
@@ -2978,15 +2528,19 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  void sse_encode_opt_box_autoadd_address(
-    Address? self,
+  void
+  sse_encode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDMnemonic(
+    DMnemonic? self,
     SseSerializer serializer,
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
 
     sse_encode_bool(self != null, serializer);
     if (self != null) {
-      sse_encode_box_autoadd_address(self, serializer);
+      sse_encode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerDMnemonic(
+        self,
+        serializer,
+      );
     }
   }
 
@@ -3034,16 +2588,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  void sse_encode_pool_config(PoolConfig self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_f_64(self.denomination, serializer);
-    sse_encode_u_32(self.fee, serializer);
-    sse_encode_u_64(self.maxDuration, serializer);
-    sse_encode_usize(self.peers, serializer);
-    sse_encode_network(self.network, serializer);
-  }
-
-  @protected
   void sse_encode_record_u_32_u_32((int, int) self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_u_32(self.$1, serializer);
@@ -3087,228 +2631,173 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 }
 
 @sealed
-class CoinImpl extends RustOpaque implements Coin {
+class DAddressImpl extends RustOpaque implements DAddress {
   // Not to be used by end users
-  CoinImpl.frbInternalDcoDecode(List<dynamic> wire)
+  DAddressImpl.frbInternalDcoDecode(List<dynamic> wire)
     : super.frbInternalDcoDecode(wire, _kStaticData);
 
   // Not to be used by end users
-  CoinImpl.frbInternalSseDecode(BigInt ptr, int externalSizeOnNative)
+  DAddressImpl.frbInternalSseDecode(BigInt ptr, int externalSizeOnNative)
     : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
 
   static final _kStaticData = RustArcStaticData(
     rustArcIncrementStrongCount:
-        RustLib.instance.api.rust_arc_increment_strong_count_Coin,
+        RustLib.instance.api.rust_arc_increment_strong_count_DAddress,
     rustArcDecrementStrongCount:
-        RustLib.instance.api.rust_arc_decrement_strong_count_Coin,
+        RustLib.instance.api.rust_arc_decrement_strong_count_DAddress,
     rustArcDecrementStrongCountPtr:
-        RustLib.instance.api.rust_arc_decrement_strong_count_CoinPtr,
+        RustLib.instance.api.rust_arc_decrement_strong_count_DAddressPtr,
   );
-
-  double amountBtc() =>
-      RustLib.instance.api.crateApiJoinstrCoinAmountBtc(that: this);
-
-  BigInt amountSat() =>
-      RustLib.instance.api.crateApiJoinstrCoinAmountSat(that: this);
-
-  RustCoin get inner =>
-      RustLib.instance.api.crateApiJoinstrCoinAutoAccessorGetInner(that: this);
-
-  set inner(RustCoin inner) => RustLib.instance.api
-      .crateApiJoinstrCoinAutoAccessorSetInner(that: this, inner: inner);
-
-  String outpoint() =>
-      RustLib.instance.api.crateApiJoinstrCoinOutpoint(that: this);
 }
 
 @sealed
-class MnemonicImpl extends RustOpaque implements Mnemonic {
+class DCoinImpl extends RustOpaque implements DCoin {
   // Not to be used by end users
-  MnemonicImpl.frbInternalDcoDecode(List<dynamic> wire)
+  DCoinImpl.frbInternalDcoDecode(List<dynamic> wire)
     : super.frbInternalDcoDecode(wire, _kStaticData);
 
   // Not to be used by end users
-  MnemonicImpl.frbInternalSseDecode(BigInt ptr, int externalSizeOnNative)
+  DCoinImpl.frbInternalSseDecode(BigInt ptr, int externalSizeOnNative)
     : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
 
   static final _kStaticData = RustArcStaticData(
     rustArcIncrementStrongCount:
-        RustLib.instance.api.rust_arc_increment_strong_count_Mnemonic,
+        RustLib.instance.api.rust_arc_increment_strong_count_DCoin,
     rustArcDecrementStrongCount:
-        RustLib.instance.api.rust_arc_decrement_strong_count_Mnemonic,
+        RustLib.instance.api.rust_arc_decrement_strong_count_DCoin,
     rustArcDecrementStrongCountPtr:
-        RustLib.instance.api.rust_arc_decrement_strong_count_MnemonicPtr,
+        RustLib.instance.api.rust_arc_decrement_strong_count_DCoinPtr,
   );
 
-  RustMnemonic get inner => RustLib.instance.api
-      .crateApiJoinstrMnemonicAutoAccessorGetInner(that: this);
+  Future<double> amountBtc() =>
+      RustLib.instance.api.crateApiJoinstrDCoinAmountBtc(that: this);
 
-  set inner(RustMnemonic inner) => RustLib.instance.api
-      .crateApiJoinstrMnemonicAutoAccessorSetInner(that: this, inner: inner);
+  Future<BigInt> amountSat() =>
+      RustLib.instance.api.crateApiJoinstrDCoinAmountSat(that: this);
+
+  Future<String> outpoint() =>
+      RustLib.instance.api.crateApiJoinstrDCoinOutpoint(that: this);
 }
 
 @sealed
-class PeerConfigImpl extends RustOpaque implements PeerConfig {
+class DMnemonicImpl extends RustOpaque implements DMnemonic {
   // Not to be used by end users
-  PeerConfigImpl.frbInternalDcoDecode(List<dynamic> wire)
+  DMnemonicImpl.frbInternalDcoDecode(List<dynamic> wire)
     : super.frbInternalDcoDecode(wire, _kStaticData);
 
   // Not to be used by end users
-  PeerConfigImpl.frbInternalSseDecode(BigInt ptr, int externalSizeOnNative)
+  DMnemonicImpl.frbInternalSseDecode(BigInt ptr, int externalSizeOnNative)
     : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
 
   static final _kStaticData = RustArcStaticData(
     rustArcIncrementStrongCount:
-        RustLib.instance.api.rust_arc_increment_strong_count_PeerConfig,
+        RustLib.instance.api.rust_arc_increment_strong_count_DMnemonic,
     rustArcDecrementStrongCount:
-        RustLib.instance.api.rust_arc_decrement_strong_count_PeerConfig,
+        RustLib.instance.api.rust_arc_decrement_strong_count_DMnemonic,
     rustArcDecrementStrongCountPtr:
-        RustLib.instance.api.rust_arc_decrement_strong_count_PeerConfigPtr,
+        RustLib.instance.api.rust_arc_decrement_strong_count_DMnemonicPtr,
+  );
+}
+
+@sealed
+class DPeerConfigImpl extends RustOpaque implements DPeerConfig {
+  // Not to be used by end users
+  DPeerConfigImpl.frbInternalDcoDecode(List<dynamic> wire)
+    : super.frbInternalDcoDecode(wire, _kStaticData);
+
+  // Not to be used by end users
+  DPeerConfigImpl.frbInternalSseDecode(BigInt ptr, int externalSizeOnNative)
+    : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
+
+  static final _kStaticData = RustArcStaticData(
+    rustArcIncrementStrongCount:
+        RustLib.instance.api.rust_arc_increment_strong_count_DPeerConfig,
+    rustArcDecrementStrongCount:
+        RustLib.instance.api.rust_arc_decrement_strong_count_DPeerConfig,
+    rustArcDecrementStrongCountPtr:
+        RustLib.instance.api.rust_arc_decrement_strong_count_DPeerConfigPtr,
   );
 
   int get electrumPort => RustLib.instance.api
-      .crateApiJoinstrPeerConfigAutoAccessorGetElectrumPort(that: this);
+      .crateApiJoinstrDPeerConfigAutoAccessorGetElectrumPort(that: this);
 
   String get electrumUrl => RustLib.instance.api
-      .crateApiJoinstrPeerConfigAutoAccessorGetElectrumUrl(that: this);
+      .crateApiJoinstrDPeerConfigAutoAccessorGetElectrumUrl(that: this);
 
-  Coin get input => RustLib.instance.api
-      .crateApiJoinstrPeerConfigAutoAccessorGetInput(that: this);
+  DCoin get input => RustLib.instance.api
+      .crateApiJoinstrDPeerConfigAutoAccessorGetInput(that: this);
 
-  Mnemonic get mnemonics => RustLib.instance.api
-      .crateApiJoinstrPeerConfigAutoAccessorGetMnemonics(that: this);
+  DMnemonic get mnemonics => RustLib.instance.api
+      .crateApiJoinstrDPeerConfigAutoAccessorGetMnemonics(that: this);
 
-  Address get output => RustLib.instance.api
-      .crateApiJoinstrPeerConfigAutoAccessorGetOutput(that: this);
+  DAddress get output => RustLib.instance.api
+      .crateApiJoinstrDPeerConfigAutoAccessorGetOutput(that: this);
 
   String get relay => RustLib.instance.api
-      .crateApiJoinstrPeerConfigAutoAccessorGetRelay(that: this);
+      .crateApiJoinstrDPeerConfigAutoAccessorGetRelay(that: this);
 
-  set electrumPort(int electrumPort) =>
-      RustLib.instance.api.crateApiJoinstrPeerConfigAutoAccessorSetElectrumPort(
+  set electrumPort(int electrumPort) => RustLib.instance.api
+      .crateApiJoinstrDPeerConfigAutoAccessorSetElectrumPort(
         that: this,
         electrumPort: electrumPort,
       );
 
   set electrumUrl(String electrumUrl) =>
-      RustLib.instance.api.crateApiJoinstrPeerConfigAutoAccessorSetElectrumUrl(
+      RustLib.instance.api.crateApiJoinstrDPeerConfigAutoAccessorSetElectrumUrl(
         that: this,
         electrumUrl: electrumUrl,
       );
 
-  set input(Coin input) => RustLib.instance.api
-      .crateApiJoinstrPeerConfigAutoAccessorSetInput(that: this, input: input);
+  set input(DCoin input) => RustLib.instance.api
+      .crateApiJoinstrDPeerConfigAutoAccessorSetInput(that: this, input: input);
 
-  set mnemonics(Mnemonic mnemonics) =>
-      RustLib.instance.api.crateApiJoinstrPeerConfigAutoAccessorSetMnemonics(
+  set mnemonics(DMnemonic mnemonics) =>
+      RustLib.instance.api.crateApiJoinstrDPeerConfigAutoAccessorSetMnemonics(
         that: this,
         mnemonics: mnemonics,
       );
 
-  set output(Address output) =>
-      RustLib.instance.api.crateApiJoinstrPeerConfigAutoAccessorSetOutput(
+  set output(DAddress output) =>
+      RustLib.instance.api.crateApiJoinstrDPeerConfigAutoAccessorSetOutput(
         that: this,
         output: output,
       );
 
   set relay(String relay) => RustLib.instance.api
-      .crateApiJoinstrPeerConfigAutoAccessorSetRelay(that: this, relay: relay);
+      .crateApiJoinstrDPeerConfigAutoAccessorSetRelay(that: this, relay: relay);
 }
 
 @sealed
-class PoolImpl extends RustOpaque implements Pool {
+class DPoolImpl extends RustOpaque implements DPool {
   // Not to be used by end users
-  PoolImpl.frbInternalDcoDecode(List<dynamic> wire)
+  DPoolImpl.frbInternalDcoDecode(List<dynamic> wire)
     : super.frbInternalDcoDecode(wire, _kStaticData);
 
   // Not to be used by end users
-  PoolImpl.frbInternalSseDecode(BigInt ptr, int externalSizeOnNative)
+  DPoolImpl.frbInternalSseDecode(BigInt ptr, int externalSizeOnNative)
     : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
 
   static final _kStaticData = RustArcStaticData(
     rustArcIncrementStrongCount:
-        RustLib.instance.api.rust_arc_increment_strong_count_Pool,
+        RustLib.instance.api.rust_arc_increment_strong_count_DPool,
     rustArcDecrementStrongCount:
-        RustLib.instance.api.rust_arc_decrement_strong_count_Pool,
+        RustLib.instance.api.rust_arc_decrement_strong_count_DPool,
     rustArcDecrementStrongCountPtr:
-        RustLib.instance.api.rust_arc_decrement_strong_count_PoolPtr,
+        RustLib.instance.api.rust_arc_decrement_strong_count_DPoolPtr,
   );
 
-  RustPool get inner =>
-      RustLib.instance.api.crateApiJoinstrPoolAutoAccessorGetInner(that: this);
+  Future<double?> denominationBtc() =>
+      RustLib.instance.api.crateApiJoinstrDPoolDenominationBtc(that: this);
 
-  set inner(RustPool inner) => RustLib.instance.api
-      .crateApiJoinstrPoolAutoAccessorSetInner(that: this, inner: inner);
+  Future<BigInt?> denominationSat() =>
+      RustLib.instance.api.crateApiJoinstrDPoolDenominationSat(that: this);
 
-  double? denominationBtc() =>
-      RustLib.instance.api.crateApiJoinstrPoolDenominationBtc(that: this);
+  Future<int?> fee() =>
+      RustLib.instance.api.crateApiJoinstrDPoolFee(that: this);
 
-  BigInt? denominationSat() =>
-      RustLib.instance.api.crateApiJoinstrPoolDenominationSat(that: this);
+  Future<BigInt?> peers() =>
+      RustLib.instance.api.crateApiJoinstrDPoolPeers(that: this);
 
-  int? fee() => RustLib.instance.api.crateApiJoinstrPoolFee(that: this);
-
-  BigInt? peers() => RustLib.instance.api.crateApiJoinstrPoolPeers(that: this);
-
-  String? relay() => RustLib.instance.api.crateApiJoinstrPoolRelay(that: this);
-}
-
-@sealed
-class RustCoinImpl extends RustOpaque implements RustCoin {
-  // Not to be used by end users
-  RustCoinImpl.frbInternalDcoDecode(List<dynamic> wire)
-    : super.frbInternalDcoDecode(wire, _kStaticData);
-
-  // Not to be used by end users
-  RustCoinImpl.frbInternalSseDecode(BigInt ptr, int externalSizeOnNative)
-    : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
-
-  static final _kStaticData = RustArcStaticData(
-    rustArcIncrementStrongCount:
-        RustLib.instance.api.rust_arc_increment_strong_count_RustCoin,
-    rustArcDecrementStrongCount:
-        RustLib.instance.api.rust_arc_decrement_strong_count_RustCoin,
-    rustArcDecrementStrongCountPtr:
-        RustLib.instance.api.rust_arc_decrement_strong_count_RustCoinPtr,
-  );
-}
-
-@sealed
-class RustMnemonicImpl extends RustOpaque implements RustMnemonic {
-  // Not to be used by end users
-  RustMnemonicImpl.frbInternalDcoDecode(List<dynamic> wire)
-    : super.frbInternalDcoDecode(wire, _kStaticData);
-
-  // Not to be used by end users
-  RustMnemonicImpl.frbInternalSseDecode(BigInt ptr, int externalSizeOnNative)
-    : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
-
-  static final _kStaticData = RustArcStaticData(
-    rustArcIncrementStrongCount:
-        RustLib.instance.api.rust_arc_increment_strong_count_RustMnemonic,
-    rustArcDecrementStrongCount:
-        RustLib.instance.api.rust_arc_decrement_strong_count_RustMnemonic,
-    rustArcDecrementStrongCountPtr:
-        RustLib.instance.api.rust_arc_decrement_strong_count_RustMnemonicPtr,
-  );
-}
-
-@sealed
-class RustPoolImpl extends RustOpaque implements RustPool {
-  // Not to be used by end users
-  RustPoolImpl.frbInternalDcoDecode(List<dynamic> wire)
-    : super.frbInternalDcoDecode(wire, _kStaticData);
-
-  // Not to be used by end users
-  RustPoolImpl.frbInternalSseDecode(BigInt ptr, int externalSizeOnNative)
-    : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
-
-  static final _kStaticData = RustArcStaticData(
-    rustArcIncrementStrongCount:
-        RustLib.instance.api.rust_arc_increment_strong_count_RustPool,
-    rustArcDecrementStrongCount:
-        RustLib.instance.api.rust_arc_decrement_strong_count_RustPool,
-    rustArcDecrementStrongCountPtr:
-        RustLib.instance.api.rust_arc_decrement_strong_count_RustPoolPtr,
-  );
+  Future<String?> relay() =>
+      RustLib.instance.api.crateApiJoinstrDPoolRelay(that: this);
 }

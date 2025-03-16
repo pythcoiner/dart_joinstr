@@ -1,5 +1,6 @@
 build:
     flutter_rust_bridge_codegen generate
+    ./build.sh
 
 clean:
     rm -fRd lib/src/rust/api/joinstr.dart

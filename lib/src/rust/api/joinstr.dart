@@ -4,7 +4,6 @@
 // ignore_for_file: invalid_use_of_internal_member, unused_import, unnecessary_import
 
 import '../frb_generated.dart';
-import '../lib.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
 // These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`
@@ -14,7 +13,7 @@ ListCoinsResult listCoins({
   required String electrumUrl,
   required int electrumPort,
   required (int, int) range,
-  required Network network,
+  required DNetwork network,
 }) => RustLib.instance.api.crateApiJoinstrListCoins(
   mnemonics: mnemonics,
   electrumUrl: electrumUrl,
@@ -24,8 +23,8 @@ ListCoinsResult listCoins({
 );
 
 CoinjoinResult initiateCoinjoin({
-  required PoolConfig config,
-  required PeerConfig peer,
+  required DPoolConfig config,
+  required DPeerConfig peer,
 }) => RustLib.instance.api.crateApiJoinstrInitiateCoinjoin(
   config: config,
   peer: peer,
@@ -41,43 +40,41 @@ ListPoolsResult listPools({
   relay: relay,
 );
 
-CoinjoinResult joinCoinjoin({required Pool pool, required PeerConfig peer}) =>
+CoinjoinResult joinCoinjoin({required DPool pool, required DPeerConfig peer}) =>
     RustLib.instance.api.crateApiJoinstrJoinCoinjoin(pool: pool, peer: peer);
 
-// Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<Coin>>
-abstract class Coin implements RustOpaqueInterface {
-  double amountBtc();
-
-  BigInt amountSat();
-
-  RustCoin get inner;
-
-  set inner(RustCoin inner);
-
-  String outpoint();
+// Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<DAddress>>
+abstract class DAddress implements RustOpaqueInterface {
+  static Future<DAddress?> fromString({required String value}) =>
+      RustLib.instance.api.crateApiJoinstrDAddressFromString(value: value);
 }
 
-// Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<Mnemonic>>
-abstract class Mnemonic implements RustOpaqueInterface {
-  RustMnemonic get inner;
+// Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<DCoin>>
+abstract class DCoin implements RustOpaqueInterface {
+  Future<double> amountBtc();
 
-  set inner(RustMnemonic inner);
+  Future<BigInt> amountSat();
 
-  static Mnemonic? fromString({required String value}) =>
-      RustLib.instance.api.crateApiJoinstrMnemonicFromString(value: value);
+  Future<String> outpoint();
 }
 
-// Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<PeerConfig>>
-abstract class PeerConfig implements RustOpaqueInterface {
+// Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<DMnemonic>>
+abstract class DMnemonic implements RustOpaqueInterface {
+  static Future<DMnemonic?> fromString({required String value}) =>
+      RustLib.instance.api.crateApiJoinstrDMnemonicFromString(value: value);
+}
+
+// Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<DPeerConfig>>
+abstract class DPeerConfig implements RustOpaqueInterface {
   int get electrumPort;
 
   String get electrumUrl;
 
-  Coin get input;
+  DCoin get input;
 
-  Mnemonic get mnemonics;
+  DMnemonic get mnemonics;
 
-  Address get output;
+  DAddress get output;
 
   String get relay;
 
@@ -85,49 +82,26 @@ abstract class PeerConfig implements RustOpaqueInterface {
 
   set electrumUrl(String electrumUrl);
 
-  set input(Coin input);
+  set input(DCoin input);
 
-  set mnemonics(Mnemonic mnemonics);
+  set mnemonics(DMnemonic mnemonics);
 
-  set output(Address output);
+  set output(DAddress output);
 
   set relay(String relay);
 }
 
-// Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<Pool>>
-abstract class Pool implements RustOpaqueInterface {
-  RustPool get inner;
+// Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<DPool>>
+abstract class DPool implements RustOpaqueInterface {
+  Future<double?> denominationBtc();
 
-  set inner(RustPool inner);
+  Future<BigInt?> denominationSat();
 
-  double? denominationBtc();
+  Future<int?> fee();
 
-  BigInt? denominationSat();
+  Future<BigInt?> peers();
 
-  int? fee();
-
-  BigInt? peers();
-
-  String? relay();
-}
-
-class Address {
-  final Address inner;
-
-  const Address({required this.inner});
-
-  static Address? fromString({required String value}) =>
-      RustLib.instance.api.crateApiJoinstrAddressFromString(value: value);
-
-  @override
-  int get hashCode => inner.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is Address &&
-          runtimeType == other.runtimeType &&
-          inner == other.inner;
+  Future<String?> relay();
 }
 
 class CoinjoinResult {
@@ -154,52 +128,16 @@ class CoinjoinResult {
           error == other.error;
 }
 
-class ListCoinsResult {
-  final List<Coin> coins;
-  final String error;
+enum DNetwork { regtest, signet, testnet, bitcoin }
 
-  const ListCoinsResult({required this.coins, required this.error});
-
-  @override
-  int get hashCode => coins.hashCode ^ error.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is ListCoinsResult &&
-          runtimeType == other.runtimeType &&
-          coins == other.coins &&
-          error == other.error;
-}
-
-class ListPoolsResult {
-  final List<Pool> pools;
-  final String error;
-
-  const ListPoolsResult({required this.pools, required this.error});
-
-  @override
-  int get hashCode => pools.hashCode ^ error.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is ListPoolsResult &&
-          runtimeType == other.runtimeType &&
-          pools == other.pools &&
-          error == other.error;
-}
-
-enum Network { regtest, signet, testnet, bitcoin }
-
-class PoolConfig {
+class DPoolConfig {
   final double denomination;
   final int fee;
   final BigInt maxDuration;
   final BigInt peers;
-  final Network network;
+  final DNetwork network;
 
-  const PoolConfig({
+  const DPoolConfig({
     required this.denomination,
     required this.fee,
     required this.maxDuration,
@@ -218,11 +156,47 @@ class PoolConfig {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PoolConfig &&
+      other is DPoolConfig &&
           runtimeType == other.runtimeType &&
           denomination == other.denomination &&
           fee == other.fee &&
           maxDuration == other.maxDuration &&
           peers == other.peers &&
           network == other.network;
+}
+
+class ListCoinsResult {
+  final List<DCoin> coins;
+  final String error;
+
+  const ListCoinsResult({required this.coins, required this.error});
+
+  @override
+  int get hashCode => coins.hashCode ^ error.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ListCoinsResult &&
+          runtimeType == other.runtimeType &&
+          coins == other.coins &&
+          error == other.error;
+}
+
+class ListPoolsResult {
+  final List<DPool> pools;
+  final String error;
+
+  const ListPoolsResult({required this.pools, required this.error});
+
+  @override
+  int get hashCode => pools.hashCode ^ error.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ListPoolsResult &&
+          runtimeType == other.runtimeType &&
+          pools == other.pools &&
+          error == other.error;
 }
