@@ -64,7 +64,7 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
   String get codegenVersion => '2.8.0';
 
   @override
-  int get rustContentHash => 1790034643;
+  int get rustContentHash => 1396070887;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -75,7 +75,7 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
 }
 
 abstract class RustLibApi extends BaseApi {
-  Future<Address?> crateApiJoinstrAddressFromString({required String value});
+  Address? crateApiJoinstrAddressFromString({required String value});
 
   double crateApiJoinstrCoinAmountBtc({required Coin that});
 
@@ -149,10 +149,6 @@ abstract class RustLibApi extends BaseApi {
 
   String? crateApiJoinstrPoolRelay({required Pool that});
 
-  bool crateApiJoinstrCoinjoinResultIsError({required CoinjoinResult that});
-
-  bool crateApiJoinstrCoinjoinResultIsOk({required CoinjoinResult that});
-
   Future<void> crateApiJoinstrInitApp();
 
   CoinjoinResult crateApiJoinstrInitiateCoinjoin({
@@ -192,6 +188,33 @@ abstract class RustLibApi extends BaseApi {
   CrossPlatformFinalizerArg get rust_arc_decrement_strong_count_CoinPtr;
 
   RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_CoinjoinResult;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_CoinjoinResult;
+
+  CrossPlatformFinalizerArg
+  get rust_arc_decrement_strong_count_CoinjoinResultPtr;
+
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_ListCoinsResult;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_ListCoinsResult;
+
+  CrossPlatformFinalizerArg
+  get rust_arc_decrement_strong_count_ListCoinsResultPtr;
+
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_ListPoolsResult;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_ListPoolsResult;
+
+  CrossPlatformFinalizerArg
+  get rust_arc_decrement_strong_count_ListPoolsResultPtr;
+
+  RustArcIncrementStrongCountFnType
   get rust_arc_increment_strong_count_Mnemonic;
 
   RustArcDecrementStrongCountFnType
@@ -223,18 +246,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   });
 
   @override
-  Future<Address?> crateApiJoinstrAddressFromString({required String value}) {
-    return handler.executeNormal(
-      NormalTask(
-        callFfi: (port_) {
+  Address? crateApiJoinstrAddressFromString({required String value}) {
+    return handler.executeSync(
+      SyncTask(
+        callFfi: () {
           final serializer = SseSerializer(generalizedFrbRustBinding);
           sse_encode_String(value, serializer);
-          pdeCallFfi(
-            generalizedFrbRustBinding,
-            serializer,
-            funcId: 1,
-            port: port_,
-          );
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 1)!;
         },
         codec: SseCodec(
           decodeSuccessData:
@@ -902,58 +920,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       const TaskConstMeta(debugName: "Pool_relay", argNames: ["that"]);
 
   @override
-  bool crateApiJoinstrCoinjoinResultIsError({required CoinjoinResult that}) {
-    return handler.executeSync(
-      SyncTask(
-        callFfi: () {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_box_autoadd_coinjoin_result(that, serializer);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 23)!;
-        },
-        codec: SseCodec(
-          decodeSuccessData: sse_decode_bool,
-          decodeErrorData: null,
-        ),
-        constMeta: kCrateApiJoinstrCoinjoinResultIsErrorConstMeta,
-        argValues: [that],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta get kCrateApiJoinstrCoinjoinResultIsErrorConstMeta =>
-      const TaskConstMeta(
-        debugName: "coinjoin_result_is_error",
-        argNames: ["that"],
-      );
-
-  @override
-  bool crateApiJoinstrCoinjoinResultIsOk({required CoinjoinResult that}) {
-    return handler.executeSync(
-      SyncTask(
-        callFfi: () {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_box_autoadd_coinjoin_result(that, serializer);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 24)!;
-        },
-        codec: SseCodec(
-          decodeSuccessData: sse_decode_bool,
-          decodeErrorData: null,
-        ),
-        constMeta: kCrateApiJoinstrCoinjoinResultIsOkConstMeta,
-        argValues: [that],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta get kCrateApiJoinstrCoinjoinResultIsOkConstMeta =>
-      const TaskConstMeta(
-        debugName: "coinjoin_result_is_ok",
-        argNames: ["that"],
-      );
-
-  @override
   Future<void> crateApiJoinstrInitApp() {
     return handler.executeNormal(
       NormalTask(
@@ -962,7 +928,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 25,
+            funcId: 23,
             port: port_,
           );
         },
@@ -994,10 +960,11 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             peer,
             serializer,
           );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 26)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 24)!;
         },
         codec: SseCodec(
-          decodeSuccessData: sse_decode_coinjoin_result,
+          decodeSuccessData:
+              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCoinjoinResult,
           decodeErrorData: null,
         ),
         constMeta: kCrateApiJoinstrInitiateCoinjoinConstMeta,
@@ -1030,10 +997,11 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             peer,
             serializer,
           );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 27)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 25)!;
         },
         codec: SseCodec(
-          decodeSuccessData: sse_decode_coinjoin_result,
+          decodeSuccessData:
+              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCoinjoinResult,
           decodeErrorData: null,
         ),
         constMeta: kCrateApiJoinstrJoinCoinjoinConstMeta,
@@ -1066,10 +1034,11 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           sse_encode_u_16(electrumPort, serializer);
           sse_encode_box_autoadd_record_u_32_u_32(range, serializer);
           sse_encode_network(network, serializer);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 28)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 26)!;
         },
         codec: SseCodec(
-          decodeSuccessData: sse_decode_list_coins_result,
+          decodeSuccessData:
+              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerListCoinsResult,
           decodeErrorData: null,
         ),
         constMeta: kCrateApiJoinstrListCoinsConstMeta,
@@ -1097,10 +1066,11 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           sse_encode_u_64(back, serializer);
           sse_encode_u_64(timeout, serializer);
           sse_encode_String(relay, serializer);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 29)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 27)!;
         },
         codec: SseCodec(
-          decodeSuccessData: sse_decode_list_pools_result,
+          decodeSuccessData:
+              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerListPoolsResult,
           decodeErrorData: null,
         ),
         constMeta: kCrateApiJoinstrListPoolsConstMeta,
@@ -1128,6 +1098,30 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   RustArcDecrementStrongCountFnType get rust_arc_decrement_strong_count_Coin =>
       wire.rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCoin;
+
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_CoinjoinResult =>
+      wire.rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCoinjoinResult;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_CoinjoinResult =>
+      wire.rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCoinjoinResult;
+
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_ListCoinsResult =>
+      wire.rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerListCoinsResult;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_ListCoinsResult =>
+      wire.rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerListCoinsResult;
+
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_ListPoolsResult =>
+      wire.rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerListPoolsResult;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_ListPoolsResult =>
+      wire.rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerListPoolsResult;
 
   RustArcIncrementStrongCountFnType
   get rust_arc_increment_strong_count_Mnemonic =>
@@ -1167,6 +1161,33 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   ) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return CoinImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  CoinjoinResult
+  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCoinjoinResult(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return CoinjoinResultImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  ListCoinsResult
+  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerListCoinsResult(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return ListCoinsResultImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  ListPoolsResult
+  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerListPoolsResult(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return ListPoolsResultImpl.frbInternalDcoDecode(raw as List<dynamic>);
   }
 
   @protected
@@ -1251,6 +1272,33 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  CoinjoinResult
+  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCoinjoinResult(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return CoinjoinResultImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  ListCoinsResult
+  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerListCoinsResult(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return ListCoinsResultImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  ListPoolsResult
+  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerListPoolsResult(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return ListPoolsResultImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
   Mnemonic
   dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMnemonic(
     dynamic raw,
@@ -1284,12 +1332,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  bool dco_decode_bool(dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return raw as bool;
-  }
-
-  @protected
   Address
   dco_decode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerAddress(
     dynamic raw,
@@ -1309,12 +1351,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     return dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMnemonic(
       raw,
     );
-  }
-
-  @protected
-  CoinjoinResult dco_decode_box_autoadd_coinjoin_result(dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return dco_decode_coinjoin_result(raw);
   }
 
   @protected
@@ -1354,18 +1390,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  CoinjoinResult dco_decode_coinjoin_result(dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    final arr = raw as List<dynamic>;
-    if (arr.length != 2)
-      throw Exception('unexpected arr length: expect 2 but see ${arr.length}');
-    return CoinjoinResult(
-      txid: dco_decode_String(arr[0]),
-      error: dco_decode_String(arr[1]),
-    );
-  }
-
-  @protected
   double dco_decode_f_64(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw as double;
@@ -1375,62 +1399,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   int dco_decode_i_32(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw as int;
-  }
-
-  @protected
-  List<Coin>
-  dco_decode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCoin(
-    dynamic raw,
-  ) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return (raw as List<dynamic>)
-        .map(
-          dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCoin,
-        )
-        .toList();
-  }
-
-  @protected
-  List<Pool>
-  dco_decode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPool(
-    dynamic raw,
-  ) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return (raw as List<dynamic>)
-        .map(
-          dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPool,
-        )
-        .toList();
-  }
-
-  @protected
-  ListCoinsResult dco_decode_list_coins_result(dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    final arr = raw as List<dynamic>;
-    if (arr.length != 2)
-      throw Exception('unexpected arr length: expect 2 but see ${arr.length}');
-    return ListCoinsResult(
-      coins:
-          dco_decode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCoin(
-            arr[0],
-          ),
-      error: dco_decode_String(arr[1]),
-    );
-  }
-
-  @protected
-  ListPoolsResult dco_decode_list_pools_result(dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    final arr = raw as List<dynamic>;
-    if (arr.length != 2)
-      throw Exception('unexpected arr length: expect 2 but see ${arr.length}');
-    return ListPoolsResult(
-      pools:
-          dco_decode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPool(
-            arr[0],
-          ),
-      error: dco_decode_String(arr[1]),
-    );
   }
 
   @protected
@@ -1587,6 +1555,42 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  CoinjoinResult
+  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCoinjoinResult(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return CoinjoinResultImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  ListCoinsResult
+  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerListCoinsResult(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return ListCoinsResultImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  ListPoolsResult
+  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerListPoolsResult(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return ListPoolsResultImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
   Mnemonic
   sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMnemonic(
     SseDeserializer deserializer,
@@ -1695,6 +1699,42 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  CoinjoinResult
+  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCoinjoinResult(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return CoinjoinResultImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  ListCoinsResult
+  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerListCoinsResult(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return ListCoinsResultImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  ListPoolsResult
+  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerListPoolsResult(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return ListPoolsResultImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
   Mnemonic
   sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMnemonic(
     SseDeserializer deserializer,
@@ -1738,12 +1778,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  bool sse_decode_bool(SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    return deserializer.buffer.getUint8() != 0;
-  }
-
-  @protected
   Address
   sse_decode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerAddress(
     SseDeserializer deserializer,
@@ -1763,14 +1797,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     return (sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMnemonic(
       deserializer,
     ));
-  }
-
-  @protected
-  CoinjoinResult sse_decode_box_autoadd_coinjoin_result(
-    SseDeserializer deserializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    return (sse_decode_coinjoin_result(deserializer));
   }
 
   @protected
@@ -1812,14 +1838,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  CoinjoinResult sse_decode_coinjoin_result(SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    var var_txid = sse_decode_String(deserializer);
-    var var_error = sse_decode_String(deserializer);
-    return CoinjoinResult(txid: var_txid, error: var_error);
-  }
-
-  @protected
   double sse_decode_f_64(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return deserializer.buffer.getFloat64();
@@ -1829,66 +1847,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   int sse_decode_i_32(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return deserializer.buffer.getInt32();
-  }
-
-  @protected
-  List<Coin>
-  sse_decode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCoin(
-    SseDeserializer deserializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-
-    var len_ = sse_decode_i_32(deserializer);
-    var ans_ = <Coin>[];
-    for (var idx_ = 0; idx_ < len_; ++idx_) {
-      ans_.add(
-        sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCoin(
-          deserializer,
-        ),
-      );
-    }
-    return ans_;
-  }
-
-  @protected
-  List<Pool>
-  sse_decode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPool(
-    SseDeserializer deserializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-
-    var len_ = sse_decode_i_32(deserializer);
-    var ans_ = <Pool>[];
-    for (var idx_ = 0; idx_ < len_; ++idx_) {
-      ans_.add(
-        sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPool(
-          deserializer,
-        ),
-      );
-    }
-    return ans_;
-  }
-
-  @protected
-  ListCoinsResult sse_decode_list_coins_result(SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    var var_coins =
-        sse_decode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCoin(
-          deserializer,
-        );
-    var var_error = sse_decode_String(deserializer);
-    return ListCoinsResult(coins: var_coins, error: var_error);
-  }
-
-  @protected
-  ListPoolsResult sse_decode_list_pools_result(SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    var var_pools =
-        sse_decode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPool(
-          deserializer,
-        );
-    var var_error = sse_decode_String(deserializer);
-    return ListPoolsResult(pools: var_pools, error: var_error);
   }
 
   @protected
@@ -2053,6 +2011,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  bool sse_decode_bool(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return deserializer.buffer.getUint8() != 0;
+  }
+
+  @protected
   void
   sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerAddress(
     Address self,
@@ -2074,6 +2038,45 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_usize(
       (self as CoinImpl).frbInternalSseEncode(move: true),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCoinjoinResult(
+    CoinjoinResult self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as CoinjoinResultImpl).frbInternalSseEncode(move: true),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerListCoinsResult(
+    ListCoinsResult self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as ListCoinsResultImpl).frbInternalSseEncode(move: true),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerListPoolsResult(
+    ListPoolsResult self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as ListPoolsResultImpl).frbInternalSseEncode(move: true),
       serializer,
     );
   }
@@ -2197,6 +2200,45 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   void
+  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCoinjoinResult(
+    CoinjoinResult self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as CoinjoinResultImpl).frbInternalSseEncode(move: null),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerListCoinsResult(
+    ListCoinsResult self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as ListCoinsResultImpl).frbInternalSseEncode(move: null),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerListPoolsResult(
+    ListPoolsResult self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as ListPoolsResultImpl).frbInternalSseEncode(move: null),
+      serializer,
+    );
+  }
+
+  @protected
+  void
   sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMnemonic(
     Mnemonic self,
     SseSerializer serializer,
@@ -2241,12 +2283,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  void sse_encode_bool(bool self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    serializer.buffer.putUint8(self ? 1 : 0);
-  }
-
-  @protected
   void
   sse_encode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerAddress(
     Address self,
@@ -2270,15 +2306,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       self,
       serializer,
     );
-  }
-
-  @protected
-  void sse_encode_box_autoadd_coinjoin_result(
-    CoinjoinResult self,
-    SseSerializer serializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_coinjoin_result(self, serializer);
   }
 
   @protected
@@ -2324,16 +2351,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  void sse_encode_coinjoin_result(
-    CoinjoinResult self,
-    SseSerializer serializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_String(self.txid, serializer);
-    sse_encode_String(self.error, serializer);
-  }
-
-  @protected
   void sse_encode_f_64(double self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     serializer.buffer.putFloat64(self);
@@ -2343,64 +2360,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   void sse_encode_i_32(int self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     serializer.buffer.putInt32(self);
-  }
-
-  @protected
-  void
-  sse_encode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCoin(
-    List<Coin> self,
-    SseSerializer serializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_i_32(self.length, serializer);
-    for (final item in self) {
-      sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCoin(
-        item,
-        serializer,
-      );
-    }
-  }
-
-  @protected
-  void
-  sse_encode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPool(
-    List<Pool> self,
-    SseSerializer serializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_i_32(self.length, serializer);
-    for (final item in self) {
-      sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPool(
-        item,
-        serializer,
-      );
-    }
-  }
-
-  @protected
-  void sse_encode_list_coins_result(
-    ListCoinsResult self,
-    SseSerializer serializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCoin(
-      self.coins,
-      serializer,
-    );
-    sse_encode_String(self.error, serializer);
-  }
-
-  @protected
-  void sse_encode_list_pools_result(
-    ListPoolsResult self,
-    SseSerializer serializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPool(
-      self.pools,
-      serializer,
-    );
-    sse_encode_String(self.error, serializer);
   }
 
   @protected
@@ -2557,6 +2516,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     serializer.buffer.putBigUint64(self);
   }
+
+  @protected
+  void sse_encode_bool(bool self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    serializer.buffer.putUint8(self ? 1 : 0);
+  }
 }
 
 @sealed
@@ -2606,6 +2571,66 @@ class CoinImpl extends RustOpaque implements Coin {
 
   String outpoint() =>
       RustLib.instance.api.crateApiJoinstrCoinOutpoint(that: this);
+}
+
+@sealed
+class CoinjoinResultImpl extends RustOpaque implements CoinjoinResult {
+  // Not to be used by end users
+  CoinjoinResultImpl.frbInternalDcoDecode(List<dynamic> wire)
+    : super.frbInternalDcoDecode(wire, _kStaticData);
+
+  // Not to be used by end users
+  CoinjoinResultImpl.frbInternalSseDecode(BigInt ptr, int externalSizeOnNative)
+    : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
+
+  static final _kStaticData = RustArcStaticData(
+    rustArcIncrementStrongCount:
+        RustLib.instance.api.rust_arc_increment_strong_count_CoinjoinResult,
+    rustArcDecrementStrongCount:
+        RustLib.instance.api.rust_arc_decrement_strong_count_CoinjoinResult,
+    rustArcDecrementStrongCountPtr:
+        RustLib.instance.api.rust_arc_decrement_strong_count_CoinjoinResultPtr,
+  );
+}
+
+@sealed
+class ListCoinsResultImpl extends RustOpaque implements ListCoinsResult {
+  // Not to be used by end users
+  ListCoinsResultImpl.frbInternalDcoDecode(List<dynamic> wire)
+    : super.frbInternalDcoDecode(wire, _kStaticData);
+
+  // Not to be used by end users
+  ListCoinsResultImpl.frbInternalSseDecode(BigInt ptr, int externalSizeOnNative)
+    : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
+
+  static final _kStaticData = RustArcStaticData(
+    rustArcIncrementStrongCount:
+        RustLib.instance.api.rust_arc_increment_strong_count_ListCoinsResult,
+    rustArcDecrementStrongCount:
+        RustLib.instance.api.rust_arc_decrement_strong_count_ListCoinsResult,
+    rustArcDecrementStrongCountPtr:
+        RustLib.instance.api.rust_arc_decrement_strong_count_ListCoinsResultPtr,
+  );
+}
+
+@sealed
+class ListPoolsResultImpl extends RustOpaque implements ListPoolsResult {
+  // Not to be used by end users
+  ListPoolsResultImpl.frbInternalDcoDecode(List<dynamic> wire)
+    : super.frbInternalDcoDecode(wire, _kStaticData);
+
+  // Not to be used by end users
+  ListPoolsResultImpl.frbInternalSseDecode(BigInt ptr, int externalSizeOnNative)
+    : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
+
+  static final _kStaticData = RustArcStaticData(
+    rustArcIncrementStrongCount:
+        RustLib.instance.api.rust_arc_increment_strong_count_ListPoolsResult,
+    rustArcDecrementStrongCount:
+        RustLib.instance.api.rust_arc_decrement_strong_count_ListPoolsResult,
+    rustArcDecrementStrongCountPtr:
+        RustLib.instance.api.rust_arc_decrement_strong_count_ListPoolsResultPtr,
+  );
 }
 
 @sealed

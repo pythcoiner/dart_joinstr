@@ -6,7 +6,8 @@
 import '../frb_generated.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
-// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`
+// These functions are ignored because they are not marked as `pub`: `error`, `error`, `error`, `is_err`, `is_err`, `is_err`, `is_ok`, `is_ok`, `is_ok`, `new`, `new`, `new`, `result`, `result`, `result`, `set_error`, `set_error`, `set_error`, `set`, `set`, `set`
+// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `clone`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`
 
 ListCoinsResult listCoins({
   required String mnemonics,
@@ -45,7 +46,7 @@ CoinjoinResult joinCoinjoin({required Pool pool, required PeerConfig peer}) =>
 
 // Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<Address>>
 abstract class Address implements RustOpaqueInterface {
-  static Future<Address?> fromString({required String value}) =>
+  static Address? fromString({required String value}) =>
       RustLib.instance.api.crateApiJoinstrAddressFromString(value: value);
 }
 
@@ -57,6 +58,15 @@ abstract class Coin implements RustOpaqueInterface {
 
   String outpoint();
 }
+
+// Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<CoinjoinResult>>
+abstract class CoinjoinResult implements RustOpaqueInterface {}
+
+// Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ListCoinsResult>>
+abstract class ListCoinsResult implements RustOpaqueInterface {}
+
+// Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ListPoolsResult>>
+abstract class ListPoolsResult implements RustOpaqueInterface {}
 
 // Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<Mnemonic>>
 abstract class Mnemonic implements RustOpaqueInterface {
@@ -102,66 +112,6 @@ abstract class Pool implements RustOpaqueInterface {
   BigInt? peers();
 
   String? relay();
-}
-
-class CoinjoinResult {
-  final String txid;
-  final String error;
-
-  const CoinjoinResult({required this.txid, required this.error});
-
-  bool isError() =>
-      RustLib.instance.api.crateApiJoinstrCoinjoinResultIsError(that: this);
-
-  bool isOk() =>
-      RustLib.instance.api.crateApiJoinstrCoinjoinResultIsOk(that: this);
-
-  @override
-  int get hashCode => txid.hashCode ^ error.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is CoinjoinResult &&
-          runtimeType == other.runtimeType &&
-          txid == other.txid &&
-          error == other.error;
-}
-
-class ListCoinsResult {
-  final List<Coin> coins;
-  final String error;
-
-  const ListCoinsResult({required this.coins, required this.error});
-
-  @override
-  int get hashCode => coins.hashCode ^ error.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is ListCoinsResult &&
-          runtimeType == other.runtimeType &&
-          coins == other.coins &&
-          error == other.error;
-}
-
-class ListPoolsResult {
-  final List<Pool> pools;
-  final String error;
-
-  const ListPoolsResult({required this.pools, required this.error});
-
-  @override
-  int get hashCode => pools.hashCode ^ error.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is ListPoolsResult &&
-          runtimeType == other.runtimeType &&
-          pools == other.pools &&
-          error == other.error;
 }
 
 enum Network { regtest, signet, testnet, bitcoin }

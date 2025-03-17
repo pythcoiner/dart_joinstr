@@ -133,6 +133,7 @@ pub struct Address {
 }
 
 impl Address {
+    #[frb(sync)]
     pub fn from_string(value: String) -> Option<Self> {
         let inner = bitcoin::Address::<NetworkUnchecked>::from_str(&value).ok()?;
         Some(Self { inner })
@@ -145,9 +146,50 @@ impl From<Address> for bitcoin::Address<NetworkUnchecked> {
     }
 }
 
+#[frb(opaque)]
 pub struct ListCoinsResult {
-    pub coins: Vec<Coin>,
-    pub error: String,
+    coins: Option<Vec<Coin>>,
+    error: Option<String>,
+}
+
+impl ListCoinsResult {
+    #[frb(sync)]
+    fn new() -> Self {
+        Self {
+            coins: None,
+            error: None,
+        }
+    }
+
+    #[frb(sync)]
+    fn is_ok(&self) -> bool {
+        self.coins.is_some() && self.error.is_none()
+    }
+
+    #[frb(sync)]
+    fn is_err(&self) -> bool {
+        !self.coins.is_some() && !self.error.is_none()
+    }
+
+    #[frb(sync)]
+    fn result(&self) -> Option<Vec<Coin>> {
+        self.coins.clone()
+    }
+
+    #[frb(sync)]
+    fn error(&self) -> Option<String> {
+        self.error.clone()
+    }
+
+    #[frb(sync)]
+    fn set(&mut self, value: Vec<Coin>) {
+        self.coins = Some(value);
+    }
+
+    #[frb(sync)]
+    fn set_error(&mut self, error: String) {
+        self.error = Some(error);
+    }
 }
 
 #[frb(sync)]
@@ -158,10 +200,7 @@ pub fn list_coins(
     range: (u32, u32),
     network: Network,
 ) -> ListCoinsResult {
-    let mut res = ListCoinsResult {
-        coins: Vec::new(),
-        error: String::new(),
-    };
+    let mut res = ListCoinsResult::new();
 
     match interface::list_coins(
         mnemonics,
@@ -170,45 +209,72 @@ pub fn list_coins(
         range,
         network.into(),
     ) {
-        Ok(r) => res.coins = r.into_iter().map(|c| c.into()).collect(),
-        Err(e) => res.error = format!("{e}"),
-    }
-
-    res
-}
-
-pub struct CoinjoinResult {
-    pub txid: String,
-    pub error: String,
-}
-
-impl CoinjoinResult {
-    #[frb(sync)]
-    pub fn is_ok(&self) -> bool {
-        !self.txid.is_empty() && self.error.is_empty()
-    }
-
-    #[frb(sync)]
-    pub fn is_error(&self) -> bool {
-        self.txid.is_empty() && !self.error.is_empty()
-    }
-}
-
-#[frb(sync)]
-pub fn initiate_coinjoin(config: PoolConfig, peer: PeerConfig) -> CoinjoinResult {
-    let mut res = CoinjoinResult {
-        txid: String::new(),
-        error: String::new(),
-    };
-    match interface::initiate_coinjoin(config.into(), peer.into()) {
-        Ok(txid) => res.txid = txid.to_string(),
-        Err(e) => res.error = format!("{e}"),
+        Ok(r) => res.set(r.into_iter().map(|c| c.into()).collect()),
+        Err(e) => res.set_error(format!("{e}")),
     }
 
     res
 }
 
 #[frb(opaque)]
+pub struct CoinjoinResult {
+    txid: Option<String>,
+    error: Option<String>,
+}
+
+impl CoinjoinResult {
+    #[frb(sync)]
+    fn is_ok(&self) -> bool {
+        self.txid.is_some() && self.error.is_none()
+    }
+
+    #[frb(sync)]
+    fn is_err(&self) -> bool {
+        !self.txid.is_some() && !self.error.is_none()
+    }
+
+    #[frb(sync)]
+    fn new() -> Self {
+        Self {
+            txid: None,
+            error: None,
+        }
+    }
+
+    #[frb(sync)]
+    fn result(&self) -> Option<String> {
+        self.txid.clone()
+    }
+
+    #[frb(sync)]
+    fn error(&self) -> Option<String> {
+        self.error.clone()
+    }
+
+    #[frb(sync)]
+    fn set(&mut self, value: String) {
+        self.txid = Some(value);
+    }
+
+    #[frb(sync)]
+    fn set_error(&mut self, error: String) {
+        self.error = Some(error);
+    }
+}
+
+#[frb(sync)]
+pub fn initiate_coinjoin(config: PoolConfig, peer: PeerConfig) -> CoinjoinResult {
+    let mut res = CoinjoinResult::new();
+    match interface::initiate_coinjoin(config.into(), peer.into()) {
+        Ok(txid) => res.set(txid.to_string()),
+        Err(e) => res.set_error(format!("{e}")),
+    }
+
+    res
+}
+
+#[frb(opaque)]
+#[derive(Clone)]
 pub struct Pool {
     #[frb(ignore)]
     inner: nostr::Pool,
@@ -269,21 +335,62 @@ impl From<Pool> for nostr::Pool {
     }
 }
 
+#[frb(opaque)]
 pub struct ListPoolsResult {
-    pub pools: Vec<Pool>,
-    pub error: String,
+    pools: Option<Vec<Pool>>,
+    error: Option<String>,
+}
+
+impl ListPoolsResult {
+    #[frb(sync)]
+    fn new() -> Self {
+        Self {
+            pools: None,
+            error: None,
+        }
+    }
+
+    #[frb(sync)]
+    fn is_ok(&self) -> bool {
+        self.pools.is_some() && self.error.is_none()
+    }
+
+    #[frb(sync)]
+    fn is_err(&self) -> bool {
+        !self.pools.is_some() && !self.error.is_none()
+    }
+
+    #[frb(sync)]
+    fn result(&self) -> Option<Vec<Pool>> {
+        self.pools.clone()
+    }
+
+    #[frb(sync)]
+    fn error(&self) -> Option<String> {
+        self.error.clone()
+    }
+
+    #[frb(sync)]
+    fn set(&mut self, value: Vec<Pool>) {
+        self.pools = Some(value);
+    }
+
+    #[frb(sync)]
+    fn set_error(&mut self, error: String) {
+        self.error = Some(error);
+    }
 }
 
 #[frb(sync)]
 pub fn list_pools(back: u64, timeout: u64, relay: String) -> ListPoolsResult {
-    let mut res = ListPoolsResult {
-        pools: Vec::new(),
-        error: String::new(),
-    };
+    let mut res = ListPoolsResult::new();
 
     match interface::list_pools(back, timeout, relay) {
-        Ok(pools) => res.pools = pools.into_iter().map(|p| p.into()).collect(),
-        Err(e) => res.error = format!("{e}"),
+        Ok(pools) => {
+            let pools: Vec<_> = pools.into_iter().map(|p| p.into()).collect();
+            res.set(pools);
+        }
+        Err(e) => res.set_error(format!("{e}")),
     }
 
     res
@@ -291,13 +398,10 @@ pub fn list_pools(back: u64, timeout: u64, relay: String) -> ListPoolsResult {
 
 #[frb(sync)]
 pub fn join_coinjoin(pool: Pool, peer: PeerConfig) -> CoinjoinResult {
-    let mut res = CoinjoinResult {
-        txid: String::new(),
-        error: String::new(),
-    };
+    let mut res = CoinjoinResult::new();
     match interface::join_coinjoin(pool.into(), peer.into()) {
-        Ok(txid) => res.txid = txid.to_string(),
-        Err(e) => res.error = format!("{e}"),
+        Ok(txid) => res.set(txid.to_string()),
+        Err(e) => res.set_error(format!("{e}")),
     }
 
     res
