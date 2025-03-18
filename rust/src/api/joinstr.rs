@@ -154,7 +154,7 @@ pub struct ListCoinsResult {
 
 impl ListCoinsResult {
     #[frb(sync)]
-    fn new() -> Self {
+    pub fn new() -> Self {
         Self {
             coins: None,
             error: None,
@@ -162,32 +162,32 @@ impl ListCoinsResult {
     }
 
     #[frb(sync)]
-    fn is_ok(&self) -> bool {
+    pub fn is_ok(&self) -> bool {
         self.coins.is_some() && self.error.is_none()
     }
 
     #[frb(sync)]
-    fn is_err(&self) -> bool {
+    pub fn is_err(&self) -> bool {
         !self.coins.is_some() && !self.error.is_none()
     }
 
     #[frb(sync)]
-    fn result(&self) -> Option<Vec<Coin>> {
+    pub fn result(&self) -> Option<Vec<Coin>> {
         self.coins.clone()
     }
 
     #[frb(sync)]
-    fn error(&self) -> Option<String> {
+    pub fn error(&self) -> Option<String> {
         self.error.clone()
     }
 
     #[frb(sync)]
-    fn set(&mut self, value: Vec<Coin>) {
+    pub fn set(&mut self, value: Vec<Coin>) {
         self.coins = Some(value);
     }
 
     #[frb(sync)]
-    fn set_error(&mut self, error: String) {
+    pub fn set_error(&mut self, error: String) {
         self.error = Some(error);
     }
 }
@@ -224,17 +224,17 @@ pub struct CoinjoinResult {
 
 impl CoinjoinResult {
     #[frb(sync)]
-    fn is_ok(&self) -> bool {
+    pub fn is_ok(&self) -> bool {
         self.txid.is_some() && self.error.is_none()
     }
 
     #[frb(sync)]
-    fn is_err(&self) -> bool {
+    pub fn is_err(&self) -> bool {
         !self.txid.is_some() && !self.error.is_none()
     }
 
     #[frb(sync)]
-    fn new() -> Self {
+    pub fn new() -> Self {
         Self {
             txid: None,
             error: None,
@@ -242,22 +242,22 @@ impl CoinjoinResult {
     }
 
     #[frb(sync)]
-    fn result(&self) -> Option<String> {
+    pub fn result(&self) -> Option<String> {
         self.txid.clone()
     }
 
     #[frb(sync)]
-    fn error(&self) -> Option<String> {
+    pub fn error(&self) -> Option<String> {
         self.error.clone()
     }
 
     #[frb(sync)]
-    fn set(&mut self, value: String) {
+    pub fn set(&mut self, value: String) {
         self.txid = Some(value);
     }
 
     #[frb(sync)]
-    fn set_error(&mut self, error: String) {
+    pub fn set_error(&mut self, error: String) {
         self.error = Some(error);
     }
 }
@@ -343,7 +343,7 @@ pub struct ListPoolsResult {
 
 impl ListPoolsResult {
     #[frb(sync)]
-    fn new() -> Self {
+    pub fn new() -> Self {
         Self {
             pools: None,
             error: None,
@@ -351,32 +351,32 @@ impl ListPoolsResult {
     }
 
     #[frb(sync)]
-    fn is_ok(&self) -> bool {
+    pub fn is_ok(&self) -> bool {
         self.pools.is_some() && self.error.is_none()
     }
 
     #[frb(sync)]
-    fn is_err(&self) -> bool {
+    pub fn is_err(&self) -> bool {
         !self.pools.is_some() && !self.error.is_none()
     }
 
     #[frb(sync)]
-    fn result(&self) -> Option<Vec<Pool>> {
+    pub fn result(&self) -> Option<Vec<Pool>> {
         self.pools.clone()
     }
 
     #[frb(sync)]
-    fn error(&self) -> Option<String> {
+    pub fn error(&self) -> Option<String> {
         self.error.clone()
     }
 
     #[frb(sync)]
-    fn set(&mut self, value: Vec<Pool>) {
+    pub fn set(&mut self, value: Vec<Pool>) {
         self.pools = Some(value);
     }
 
     #[frb(sync)]
-    fn set_error(&mut self, error: String) {
+    pub fn set_error(&mut self, error: String) {
         self.error = Some(error);
     }
 }

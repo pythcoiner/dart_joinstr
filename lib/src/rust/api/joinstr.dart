@@ -6,7 +6,6 @@
 import '../frb_generated.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
-// These functions are ignored because they are not marked as `pub`: `error`, `error`, `error`, `is_err`, `is_err`, `is_err`, `is_ok`, `is_ok`, `is_ok`, `new`, `new`, `new`, `result`, `result`, `result`, `set_error`, `set_error`, `set_error`, `set`, `set`, `set`
 // These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `clone`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`
 
 ListCoinsResult listCoins({
@@ -60,13 +59,58 @@ abstract class Coin implements RustOpaqueInterface {
 }
 
 // Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<CoinjoinResult>>
-abstract class CoinjoinResult implements RustOpaqueInterface {}
+abstract class CoinjoinResult implements RustOpaqueInterface {
+  String? error();
+
+  bool isErr();
+
+  bool isOk();
+
+  factory CoinjoinResult() =>
+      RustLib.instance.api.crateApiJoinstrCoinjoinResultNew();
+
+  String? result();
+
+  void set_({required String value});
+
+  void setError({required String error});
+}
 
 // Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ListCoinsResult>>
-abstract class ListCoinsResult implements RustOpaqueInterface {}
+abstract class ListCoinsResult implements RustOpaqueInterface {
+  String? error();
+
+  bool isErr();
+
+  bool isOk();
+
+  factory ListCoinsResult() =>
+      RustLib.instance.api.crateApiJoinstrListCoinsResultNew();
+
+  List<Coin>? result();
+
+  void set_({required List<Coin> value});
+
+  void setError({required String error});
+}
 
 // Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ListPoolsResult>>
-abstract class ListPoolsResult implements RustOpaqueInterface {}
+abstract class ListPoolsResult implements RustOpaqueInterface {
+  String? error();
+
+  bool isErr();
+
+  bool isOk();
+
+  factory ListPoolsResult() =>
+      RustLib.instance.api.crateApiJoinstrListPoolsResultNew();
+
+  List<Pool>? result();
+
+  void set_({required List<Pool> value});
+
+  void setError({required String error});
+}
 
 // Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<Mnemonic>>
 abstract class Mnemonic implements RustOpaqueInterface {
